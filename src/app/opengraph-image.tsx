@@ -6,6 +6,9 @@ import { ImageResponse } from "next/og";
  * Aucun fichier binaire à maintenir ; à remplacer par un visuel photo
  * dès que des images d'événements sont disponibles.
  */
+/** Généré au build — requis par l'export statique de l'aperçu client. */
+export const dynamic = "force-static";
+
 export const alt =
   "DDSL Audio — location de matériel son, lumière et scène à Bordeaux";
 export const size = { width: 1200, height: 630 };

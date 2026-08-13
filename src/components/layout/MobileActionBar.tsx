@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQuote } from "@/components/quote/QuoteProvider";
+import { WhatsAppIcon, whatsappHref } from "@/components/layout/WhatsApp";
 import { site } from "@/data/site";
 
 /**
@@ -26,6 +27,7 @@ export function MobileActionBar() {
   const formPages = ["/demande", "/besoin-conseil", "/dj", "/contact"];
   const hidden = isOpen || formPages.includes(pathname);
   const phone = site.contact.phone;
+  const whatsapp = whatsappHref();
   const shown = visible && !hidden;
 
   return (
@@ -42,6 +44,17 @@ export function MobileActionBar() {
             className="btn btn-sm btn-ghost flex-none px-4"
           >
             Appeler
+          </a>
+        )}
+        {whatsapp && (
+          <a
+            href={whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Écrire à DDSL Audio sur WhatsApp"
+            className="btn btn-sm btn-ghost flex-none px-3"
+          >
+            <WhatsAppIcon className="h-[19px] w-[19px]" />
           </a>
         )}
         {/* Demande vide : un seul bouton, sinon les deux disent la même chose. */}

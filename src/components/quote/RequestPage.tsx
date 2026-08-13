@@ -16,6 +16,7 @@ import {
   venues,
   type Brief,
 } from "@/lib/brief";
+import { postDevis } from "@/lib/devis";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -102,46 +103,39 @@ export function RequestPage() {
     setStatus("sending");
 
     try {
-      const res = await fetch("/api/devis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          kind: "materiel",
-          contact: {
-            firstName: form.firstName,
-            lastName: form.lastName,
-            company: form.company,
-            email: form.email,
-            phone: form.phone,
-          },
-          event: {
-            type: form.eventType,
-            date: form.date,
-            place: form.place,
-            guests: form.guests,
-            schedule: form.schedule,
-            venue: labelFor(venues, brief?.venue ?? null) ?? "",
-          },
-          needs: {
-            installation:
-              installationChoices.find((c) => c.id === installation)?.label ??
-              "",
-            dj: form.dj,
-            musicians: form.musicians,
-            list:
-              brief?.needs
-                .map((n) => labelFor(needList, n))
-                .filter((x): x is string => Boolean(x)) ?? [],
-          },
-          items: detailed.map(({ item }) => item),
-          message: form.message,
-        }),
+      const result = await postDevis({
+        kind: "materiel",
+        contact: {
+          firstName: form.firstName,
+          lastName: form.lastName,
+          company: form.company,
+          email: form.email,
+          phone: form.phone,
+        },
+        event: {
+          type: form.eventType,
+          date: form.date,
+          place: form.place,
+          guests: form.guests,
+          schedule: form.schedule,
+          venue: labelFor(venues, brief?.venue ?? null) ?? "",
+        },
+        needs: {
+          installation:
+            installationChoices.find((c) => c.id === installation)?.label ?? "",
+          dj: form.dj,
+          musicians: form.musicians,
+          list:
+            brief?.needs
+              .map((n) => labelFor(needList, n))
+              .filter((x): x is string => Boolean(x)) ?? [],
+        },
+        items: detailed.map(({ item }) => item),
+        message: form.message,
       });
 
-      const data = (await res.json()) as { ok: boolean; error?: string };
-
-      if (!res.ok || !data.ok) {
-        setError(data.error ?? "L'envoi n'a pas abouti. Réessayez.");
+      if (!result.ok) {
+        setError(result.error ?? "L'envoi n'a pas abouti. Réessayez.");
         setStatus("error");
         return;
       }

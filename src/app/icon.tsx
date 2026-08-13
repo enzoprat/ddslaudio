@@ -5,6 +5,9 @@ import { ImageResponse } from "next/og";
  * logo vectoriel définitif n'a pas été fourni. Reprend le monogramme
  * laiton sur fond encre.
  */
+/** Généré au build — requis par l'export statique de l'aperçu client. */
+export const dynamic = "force-static";
+
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 

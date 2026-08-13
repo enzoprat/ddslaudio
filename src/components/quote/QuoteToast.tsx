@@ -10,7 +10,8 @@ export function QuoteToast() {
   return (
     <div
       aria-live="polite"
-      className={`fixed z-[80] left-1/2 -translate-x-1/2 bottom-[84px] sm:bottom-6 sm:left-auto sm:right-6 sm:translate-x-0 w-[calc(100%-32px)] sm:w-auto transition-all duration-300 ${
+      /* `lg:bottom-24` : au-dessus de la pastille WhatsApp, qui n'apparaît qu'à partir de `lg`. */
+      className={`fixed z-[80] left-1/2 -translate-x-1/2 bottom-[84px] sm:bottom-6 sm:left-auto sm:right-6 sm:translate-x-0 lg:bottom-24 w-[calc(100%-32px)] sm:w-auto transition-all duration-300 ${
         visible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-3 pointer-events-none"

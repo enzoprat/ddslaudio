@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
+import { WhatsAppIcon, whatsappHref } from "@/components/layout/WhatsApp";
 import { categories } from "@/data/catalog";
 import { site } from "@/data/site";
 
@@ -19,7 +20,8 @@ const MAISON = [
 
 export function Footer() {
   const { contact } = site;
-  const hasContact = Boolean(contact.phone || contact.email);
+  const whatsapp = whatsappHref();
+  const hasContact = Boolean(contact.phone || contact.email || whatsapp);
 
   return (
     <footer className="stage relative">
@@ -52,6 +54,19 @@ export function Footer() {
                       className="text-brass-300 hover:text-brass-200"
                     >
                       {contact.email}
+                    </a>
+                  </li>
+                )}
+                {whatsapp && (
+                  <li>
+                    <a
+                      href={whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-brass-300 hover:text-brass-200"
+                    >
+                      <WhatsAppIcon className="h-4 w-4" />
+                      WhatsApp
                     </a>
                   </li>
                 )}

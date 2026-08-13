@@ -62,7 +62,7 @@ export default function MentionsLegalesPage() {
             <div className="mt-6 rounded-[3px] border-l-2 border-brass-600/60 bg-ink-950/[0.035] px-5 py-4">
               <p className="text-[14.5px] leading-relaxed text-ink-600">
                 Les informations suivantes ne sont pas encore publiées&nbsp;:{" "}
-                {missing.join(", ").toLowerCase()}. Elles seront ajoutées dès
+                {missing.join(", ")}. Elles seront ajoutées dès
                 communication par DDSL Audio. En attendant, toute demande
                 d'identification de l'éditeur peut être formulée via le{" "}
                 <Link

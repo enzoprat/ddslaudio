@@ -21,15 +21,21 @@ export const site = {
   contact: {
     phone: "06 41 80 89 82" as string | null,
     phoneHref: "+33641808982" as string | null,
-    whatsapp: null as string | null, // ex. "+33600000000"
+    whatsapp: "+33641808982" as string | null,
     email: null as string | null, // ex. "contact@ddsl-audio.fr"
-    address: null as string | null,
-    postalCode: null as string | null,
+
+    /* Identité légale relevée sur societe.com (SIREN 794 913 798).
+       À faire confirmer par DDSL Audio avant la mise en ligne. */
+    address: "26 rue Sarah Bernhardt" as string | null,
+    postalCode: "33600 Pessac" as string | null,
     openingHours: null as string | null,
-    siret: null as string | null,
-    legalForm: null as string | null,
+    siret: "794 913 798 00029" as string | null,
+    legalForm: "Entrepreneur individuel" as string | null,
+    /* Laissé vide volontairement : le n° de TVA affiché par societe.com est
+       recalculé depuis le SIREN, il n'est pas déclaré. Ne le renseigner que si
+       DDSL Audio est effectivement assujetti à la TVA. */
     vatNumber: null as string | null,
-    publicationDirector: null as string | null,
+    publicationDirector: "Daniel Foudjem Ganno" as string | null,
     hostingProvider: null as string | null,
   },
 

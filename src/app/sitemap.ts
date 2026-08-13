@@ -6,6 +6,9 @@ import { site } from "@/data/site";
  * Les pages sans contenu public (demande de devis, pages légales)
  * sont volontairement exclues : elles sont en `noindex`.
  */
+/** Généré au build — requis par l'export statique de l'aperçu client. */
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const url = (path: string) => `${site.baseUrl}${path}`;

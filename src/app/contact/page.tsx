@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { ContactForm } from "@/components/contact/ContactForm";
+import { WhatsAppIcon, whatsappHref } from "@/components/layout/WhatsApp";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
@@ -37,7 +38,8 @@ const ROUTES = [
 
 export default function ContactPage() {
   const { contact, social } = site;
-  const hasDirect = Boolean(contact.phone || contact.email);
+  const whatsapp = whatsappHref();
+  const hasDirect = Boolean(contact.phone || contact.email || whatsapp);
   const socials = Object.entries(social).filter(([, v]) => Boolean(v)) as [
     string,
     string,
@@ -95,6 +97,19 @@ export default function ContactPage() {
                         className="text-brass-700 hover:text-brass-700"
                       >
                         {contact.email}
+                      </a>
+                    </li>
+                  )}
+                  {whatsapp && (
+                    <li>
+                      <a
+                        href={whatsapp}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-brass-700"
+                      >
+                        <WhatsAppIcon className="h-[17px] w-[17px]" />
+                        WhatsApp
                       </a>
                     </li>
                   )}

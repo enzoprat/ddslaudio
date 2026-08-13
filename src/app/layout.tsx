@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
+import { WhatsAppFab } from "@/components/layout/WhatsApp";
 import { QuoteProvider } from "@/components/quote/QuoteProvider";
 import { QuoteDrawer } from "@/components/quote/QuoteDrawer";
 import { QuoteToast } from "@/components/quote/QuoteToast";
@@ -98,6 +99,7 @@ export default function RootLayout({
           <QuoteDrawer />
           <QuoteToast />
           <MobileActionBar />
+          <WhatsAppFab />
           <div className="h-16 lg:hidden" aria-hidden="true" />
         </QuoteProvider>
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { eventTypes } from "@/data/site";
 import { guestRanges } from "@/lib/brief";
+import { postDevis } from "@/lib/devis";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -62,40 +63,35 @@ export function DjForm() {
     setStatus("sending");
 
     try {
-      const res = await fetch("/api/devis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          kind: "dj",
-          contact: {
-            firstName: f.firstName,
-            lastName: f.lastName,
-            company: f.company,
-            email: f.email,
-            phone: f.phone,
-          },
-          event: {
-            type: f.eventType,
-            date: f.date,
-            place: f.place,
-            schedule: f.schedule,
-            guests: f.guests,
-          },
-          needs: {
-            dj: true,
-            musicians: f.musicians,
-            sound: f.sound,
-            light: f.light,
-            mood: f.mood,
-          },
-          items: [],
-          message: f.message,
-        }),
+      const result = await postDevis({
+        kind: "dj",
+        contact: {
+          firstName: f.firstName,
+          lastName: f.lastName,
+          company: f.company,
+          email: f.email,
+          phone: f.phone,
+        },
+        event: {
+          type: f.eventType,
+          date: f.date,
+          place: f.place,
+          schedule: f.schedule,
+          guests: f.guests,
+        },
+        needs: {
+          dj: true,
+          musicians: f.musicians,
+          sound: f.sound,
+          light: f.light,
+          mood: f.mood,
+        },
+        items: [],
+        message: f.message,
       });
 
-      const data = (await res.json()) as { ok: boolean; error?: string };
-      if (!res.ok || !data.ok) {
-        setError(data.error ?? "L'envoi n'a pas abouti. Réessayez.");
+      if (!result.ok) {
+        setError(result.error ?? "L'envoi n'a pas abouti. Réessayez.");
         setStatus("error");
         return;
       }

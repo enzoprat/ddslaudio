@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
+import { postDevis } from "@/lib/devis";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -46,28 +47,23 @@ export function ContactForm() {
     setStatus("sending");
 
     try {
-      const res = await fetch("/api/devis", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          kind: "contact",
-          contact: {
-            firstName: f.firstName,
-            lastName: f.lastName,
-            company: f.company,
-            email: f.email,
-            phone: f.phone,
-          },
-          event: { type: f.subject, date: f.date },
-          needs: {},
-          items: [],
-          message: f.message,
-        }),
+      const result = await postDevis({
+        kind: "contact",
+        contact: {
+          firstName: f.firstName,
+          lastName: f.lastName,
+          company: f.company,
+          email: f.email,
+          phone: f.phone,
+        },
+        event: { type: f.subject, date: f.date },
+        needs: {},
+        items: [],
+        message: f.message,
       });
 
-      const data = (await res.json()) as { ok: boolean; error?: string };
-      if (!res.ok || !data.ok) {
-        setError(data.error ?? "L'envoi n'a pas abouti. Réessayez.");
+      if (!result.ok) {
+        setError(result.error ?? "L'envoi n'a pas abouti. Réessayez.");
         setStatus("error");
         return;
       }

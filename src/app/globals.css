@@ -123,9 +123,14 @@ p {
   text-wrap: pretty;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Dans `@layer base` : sans cela, cette règle (non layerée) l'emporte sur
+   toutes les utilitaires Tailwind et rend `text-brass-300` & co. inopérants
+   sur les liens. */
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 button,

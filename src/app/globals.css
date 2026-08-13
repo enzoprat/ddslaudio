@@ -1,0 +1,646 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   DDSL AUDIO — Design tokens
+   Blanc cassé (papier) · Noir (flight case) · Laiton
+
+   Le site est CLAIR par défaut. Le noir n'est plus le fond :
+   c'est un contraste, réservé à quelques blocs « scène » (.stage)
+   et au pied de page. L'or est traité comme du LAITON de
+   matériel : désaturé, en filets et en accents, jamais en aplat.
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-ink-950: #0b0c0d;
+  --color-ink-900: #121316;
+  --color-ink-850: #191b1f;
+  --color-ink-800: #22252a;
+  --color-ink-750: #2b2f35;
+  --color-ink-700: #3a3f47;
+  --color-ink-600: #545a63;
+  --color-ink-500: #71777f;
+  --color-ink-400: #939aa2;
+  --color-ink-300: #b8bdc4;
+
+  --color-paper-50: #ffffff;
+  --color-paper-100: #faf9f6;
+  --color-paper-200: #f3f1ea;
+  --color-paper-300: #e8e5db;
+  --color-paper-400: #d8d4c6;
+
+  --color-brass-100: #f7e9c6;
+  --color-brass-200: #eed9a4;
+  --color-brass-300: #e0c179;
+  --color-brass-400: #d0ac5c;
+  --color-brass-500: #b8903f;
+  --color-brass-600: #96702c;
+  --color-brass-700: #6f521f;
+  --color-brass-900: #33260f;
+
+  --color-signal: #2f8f4a;
+  --color-alert: #bd3f28;
+
+  --font-display: var(--font-display-family), "Helvetica Neue", sans-serif;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-tech), ui-monospace, monospace;
+
+  --ease-fader: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Surfaces contextuelles : redéfinies dans .stage pour que panneaux,
+   boutons, champs et filets s'adaptent sans classe supplémentaire. */
+:root {
+  --surface: #ffffff;
+  --surface-sunken: #faf9f6;
+  --surface-raised: #ffffff;
+  --text: #121316;
+  --text-soft: #3a3f47;
+  --text-muted: #71777f;
+  --line: color-mix(in srgb, #0b0c0d 11%, transparent);
+  --line-strong: color-mix(in srgb, #0b0c0d 22%, transparent);
+  --line-brass: color-mix(in srgb, #96702c 55%, transparent);
+  --accent: #96702c;
+  --header-h: 70px;
+}
+
+/* Bloc « scène » : la respiration noire du site. */
+.stage {
+  --surface: #121316;
+  --surface-sunken: #0b0c0d;
+  --surface-raised: #191b1f;
+  --text: #ffffff;
+  --text-soft: #f3f1ea;
+  --text-muted: color-mix(in srgb, #f3f1ea 55%, transparent);
+  --line: color-mix(in srgb, #ffffff 12%, transparent);
+  --line-strong: color-mix(in srgb, #ffffff 24%, transparent);
+  --line-brass: color-mix(in srgb, #d0ac5c 45%, transparent);
+  --accent: #e0c179;
+  background-color: var(--color-ink-950);
+  color: var(--color-paper-200);
+}
+
+/* ───────────────────────────── Base ───────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-paper-100);
+  color: var(--color-ink-800);
+  font-family: var(--font-sans);
+  font-size: 16.5px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-brass-200);
+  color: var(--color-ink-950);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brass-600);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Masque les flèches des inputs number (on utilise nos propres commandes) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ───────────────────────── Typographie utilitaire ───────────────────────── */
+
+/* Surtitre de section : sans-serif, capitales sobres.
+   (Anciennement en monospace très espacé — trop « gabarit ».) */
+.tech {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Sérigraphie : réservée aux vraies références techniques (refs, codes). */
+.tech-sm {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+}
+
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.6rem, 7.2vw, 5.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+.display-lg {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+}
+
+.display-md {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.45rem, 2.8vw, 2rem);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+}
+
+.lede {
+  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+.stage .lede {
+  color: color-mix(in srgb, var(--color-paper-200) 78%, transparent);
+}
+
+/* ───────────────────────── Surfaces & filets ───────────────────────── */
+
+.hairline {
+  border-color: var(--line);
+}
+
+/* Filet laiton dégradé — sépare les sections sans faire de trait plein */
+.rule-brass {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-brass-500) 18%,
+    var(--color-brass-400) 50%,
+    var(--color-brass-500) 82%,
+    transparent
+  );
+  opacity: 0.7;
+}
+
+/* Panneau : surface posée sur le fond, ombre très courte plutôt
+   qu'un liseré lumineux (qui ne fonctionnait que sur fond noir). */
+.panel {
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  position: relative;
+  box-shadow: 0 1px 2px color-mix(in srgb, #0b0c0d 5%, transparent);
+}
+
+.stage .panel {
+  box-shadow: none;
+}
+
+/* Grille de perforation façade de rack, très discrète */
+.perf {
+  background-image: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--text) 12%, transparent) 0.5px,
+    transparent 0.6px
+  );
+  background-size: 6px 6px;
+}
+
+/* Trame technique de fond */
+.grid-tech {
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 88px 88px;
+}
+
+/* Grain léger : casse l'aplat numérique */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.stage .grain::after {
+  mix-blend-mode: overlay;
+  opacity: 0.05;
+}
+
+/* ───────────────────────── Commandes (boutons) ───────────────────────── */
+
+/* Bouton : lettrage courant, pas de capitales ni de halo.
+   Le laiton n'apparaît qu'au survol, en filet. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 48px;
+  padding: 0 1.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  transition:
+    color 0.18s,
+    border-color 0.18s,
+    background-color 0.18s;
+}
+
+.btn:hover {
+  border-color: var(--line-brass);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.btn:active:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* Commande hors service : contraste réduit, pas de retour au survol. */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:disabled:hover,
+.btn[aria-disabled="true"]:hover {
+  border-color: var(--line-strong);
+  background: transparent;
+}
+
+/* Action principale : aplat d'encre sur fond clair, aplat clair sur
+   fond noir. Un seul jeu de règles grâce aux variables de surface. */
+.btn-primary {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--surface);
+}
+
+.btn-primary:hover {
+  background: var(--color-ink-800);
+  border-color: var(--color-ink-800);
+  color: var(--color-paper-50);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-brass-400) 55%, transparent);
+}
+
+.stage .btn-primary:hover {
+  background: var(--color-brass-200);
+  border-color: var(--color-brass-200);
+  color: var(--color-ink-950);
+  box-shadow: none;
+}
+
+.btn-primary:disabled:hover,
+.btn-primary[aria-disabled="true"]:hover {
+  background: var(--text);
+  border-color: var(--text);
+  box-shadow: none;
+}
+
+.btn-ghost {
+  border-color: var(--line);
+}
+
+.btn-sm {
+  min-height: 40px;
+  padding: 0 0.95rem;
+  font-size: 0.875rem;
+}
+
+/* Bouton posé sur un fond déjà sombre (pied de page, bandeau scène) */
+.btn-invert {
+  background: var(--color-paper-50);
+  border-color: var(--color-paper-50);
+  color: var(--color-ink-950);
+}
+
+.btn-invert:hover {
+  background: var(--color-brass-200);
+  border-color: var(--color-brass-200);
+  color: var(--color-ink-950);
+}
+
+/* Lien texte souligné au laiton */
+.link-brass {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: text-decoration-color 0.18s;
+}
+
+.link-brass:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ───────────────────────── Témoins & indicateurs ───────────────────────── */
+
+/* Témoin d'état — réservé à ce qui change vraiment (demande en cours).
+   Plus de halo : sur fond clair, un point qui brille fait décoratif. */
+.led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-signal);
+  flex: none;
+}
+
+.led-brass {
+  background: var(--color-brass-600);
+}
+
+.stage .led-brass {
+  background: var(--color-brass-300);
+}
+
+.led-pulse {
+  animation: led-pulse 2.6s var(--ease-fader) infinite;
+}
+
+@keyframes led-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ───────────────────────── Animations d'ambiance ───────────────────────── */
+
+/* Faisceau lumineux : cône diffus, mouvement très lent */
+@keyframes beam-sweep {
+  0%,
+  100% {
+    transform: rotate(-7deg) scaleY(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(6deg) scaleY(1.06);
+    opacity: 0.78;
+  }
+}
+
+@keyframes beam-sweep-alt {
+  0%,
+  100% {
+    transform: rotate(8deg) scaleY(1.04);
+    opacity: 0.42;
+  }
+  50% {
+    transform: rotate(-5deg) scaleY(1);
+    opacity: 0.66;
+  }
+}
+
+/* Montée de fader — révélation de contenu */
+@keyframes fader-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  animation: fader-up 0.7s var(--ease-fader) both;
+}
+
+/* Défilement du signal */
+@keyframes signal-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes vu-bounce {
+  0%,
+  100% {
+    transform: scaleY(0.18);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+/* ───────────────────────── Formulaires ───────────────────────── */
+
+.field {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.7rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  color: var(--text);
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s,
+    background-color 0.18s;
+}
+
+.field::placeholder {
+  color: var(--text-muted);
+}
+
+.field:hover {
+  border-color: color-mix(in srgb, var(--text) 35%, transparent);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--color-brass-600);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-brass-500) 18%, transparent);
+}
+
+textarea.field {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+select.field {
+  appearance: none;
+  background-image: linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--color-brass-600) 50%
+    ),
+    linear-gradient(135deg, var(--color-brass-600) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% + 2px),
+    calc(100% - 13px) calc(50% + 2px);
+  background-size:
+    5px 5px,
+    5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 2.5rem;
+}
+
+.label {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--text-soft);
+  margin-bottom: 0.4rem;
+}
+
+/* Cases à cocher / radios personnalisées façon sélecteur de patch */
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 48px;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  cursor: pointer;
+  transition:
+    border-color 0.18s,
+    background-color 0.18s;
+}
+
+.choice:hover {
+  border-color: var(--line-brass);
+}
+
+.choice:has(input:checked) {
+  border-color: var(--color-brass-600);
+  background: color-mix(in srgb, var(--color-brass-500) 12%, var(--surface));
+}
+
+.stage .choice:has(input:checked) {
+  background: color-mix(in srgb, var(--color-brass-500) 22%, var(--surface));
+}
+
+.choice input {
+  accent-color: var(--color-brass-600);
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+
+/* ───────────────────────── Barre de défilement ───────────────────────── */
+
+@media (min-width: 900px) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-paper-400) transparent;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* ───────────────────────── Accessibilité ───────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 200;
+  background: var(--color-ink-950);
+  color: var(--color-paper-50);
+  padding: 10px 16px;
+  border-radius: 2px;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 12px;
+}

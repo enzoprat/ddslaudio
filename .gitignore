@@ -1,0 +1,20 @@
+# Dépendances
+/node_modules
+
+# Build Next.js
+/.next
+/out
+next-env.d.ts
+tsconfig.tsbuildinfo
+
+# Variables d'environnement (clés Resend, etc.) — ne jamais versionner
+.env
+.env.local
+.env.*.local
+
+# Outils locaux
+/.claude
+.vercel
+
+# macOS
+.DS_Store

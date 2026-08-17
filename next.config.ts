@@ -21,7 +21,13 @@ const nextConfig: NextConfig = {
         output: "export" as const,
         trailingSlash: true,
         basePath,
-        images: { unoptimized: true },
+        // Le sous-chemin doit être lisible depuis le loader, qui n'a pas
+        // accès à cette configuration.
+        env: { NEXT_PUBLIC_BASE_PATH: basePath },
+        images: {
+          loader: "custom" as const,
+          loaderFile: "./src/lib/pagesImageLoader.ts",
+        },
       }
     : {}),
 };

@@ -1,10 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Beams, VuMeter } from "@/components/ui/Ambience";
 import { Glyph } from "@/components/ui/Glyph";
 import { parcSummary } from "@/data/catalog";
+import { photo } from "@/data/photos";
 
 export function Hero() {
   const parc = parcSummary();
+  const visuel = photo("regie-dj-colonnes");
 
   return (
     <section className="relative grain overflow-hidden border-b border-ink-950/10">
@@ -68,7 +71,23 @@ export function Hero() {
         </div>
 
         {/* Panneau de rack : état du parc */}
-        <aside className="panel reveal rounded-[3px]" style={{ animationDelay: "160ms" }}>
+        <aside
+          className="panel reveal overflow-hidden rounded-[3px]"
+          style={{ animationDelay: "160ms" }}
+        >
+          {visuel && (
+            <div className="relative aspect-[4/3] w-full bg-ink-950">
+              <Image
+                src={visuel.src}
+                alt={visuel.alt}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 380px"
+                className="object-cover"
+              />
+            </div>
+          )}
+
           <header className="flex items-center justify-between gap-3 border-b border-ink-950/10 px-4 py-3">
             <h2 className="tech text-ink-800">Le parc</h2>
             <VuMeter bars={9} className="opacity-70" />

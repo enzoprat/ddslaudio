@@ -8,6 +8,7 @@ import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import { SignalLine } from "@/components/ui/Ambience";
 import { categories } from "@/data/catalog";
+import { photos } from "@/data/photos";
 import { realisations } from "@/data/realisations";
 
 export const metadata: Metadata = {
@@ -55,7 +56,7 @@ export default function RealisationsPage() {
             lieu impose sa contrainte.{" "}
             {hasItems
               ? "Cette page rassemble les événements équipés par DDSL Audio en Gironde et dans la région bordelaise."
-              : "Cette page réunira les événements équipés par DDSL Audio en Gironde et dans la région bordelaise, avec le matériel utilisé sur chacun."}
+              : "Voici le parc en situation, du montage à la salle prête."}
           </p>
         </div>
       </section>
@@ -116,20 +117,44 @@ export default function RealisationsPage() {
       ) : (
         <section className="py-16 sm:py-20">
           <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-            <Reveal>
-              <div className="panel rounded-[3px] p-7 sm:p-10">
-                <span className="tech text-brass-700">Galerie en préparation</span>
+            <ul className="grid auto-rows-[minmax(230px,auto)] gap-3 sm:grid-cols-3">
+              {photos.map((p, i) => (
+                <Reveal
+                  as="li"
+                  key={p.id}
+                  delay={i * 60}
+                  className={SPANS[i % SPANS.length]}
+                >
+                  <figure className="panel flex h-full flex-col overflow-hidden rounded-[3px]">
+                    <div className="relative min-h-[190px] flex-1 bg-ink-950">
+                      <Image
+                        src={p.src}
+                        alt={p.alt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 45vw"
+                        className="object-cover"
+                        style={{ objectPosition: p.focus }}
+                      />
+                    </div>
+                    <figcaption className="px-4 py-3.5 text-[14px] leading-snug text-ink-600">
+                      {p.caption}
+                    </figcaption>
+                  </figure>
+                </Reveal>
+              ))}
+            </ul>
+
+            <Reveal delay={90}>
+              <div className="panel mt-10 rounded-[3px] p-7 sm:p-9">
+                <span className="tech text-brass-700">Fiches détaillées</span>
                 <h2 className="display-md mt-5 max-w-2xl text-ink-900">
-                  Les photos des événements ne sont pas encore en ligne
+                  Le détail événement par événement viendra ensuite
                 </h2>
                 <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-ink-600">
-                  Les prises de vue sont en cours de rassemblement, et doivent
-                  être autorisées par les organisateurs avant publication.
-                </p>
-                <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-500">
-                  En attendant, le catalogue montre le matériel disponible, et
-                  la page prestations explique comment se déroule une
-                  installation.
+                  Lieu, date et liste du matériel utilisé ne sont pas publiés
+                  ici&nbsp;: ils demandent l'accord des organisateurs. En
+                  attendant, le catalogue montre le parc disponible et la page
+                  prestations explique comment se déroule une installation.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link href="/materiel" className="btn btn-primary">

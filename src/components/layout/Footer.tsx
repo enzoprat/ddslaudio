@@ -28,7 +28,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
         <div className="grid gap-10 py-14 md:grid-cols-[minmax(0,1fr)_auto] md:gap-16">
           <div>
-            <Logo size="md" />
+            <Logo size="md" tone="sombre" />
             <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-paper-200/70">
               Location de matériel son, lumière, scène et vidéo à Bordeaux.
               Installation, sonorisation d'événement et prestation DJ en Gironde

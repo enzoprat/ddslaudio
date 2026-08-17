@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -9,6 +10,7 @@ import { Glyph } from "@/components/ui/Glyph";
 import { Beams, SignalLine } from "@/components/ui/Ambience";
 import { FaqJsonLd } from "@/components/seo/JsonLd";
 import { parcSummary, categoryCount } from "@/data/catalog";
+import { apercuAccueil } from "@/data/photos";
 
 export const metadata: Metadata = {
   title:
@@ -391,11 +393,32 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="mt-6 max-w-2xl text-[15.5px] leading-relaxed text-ink-600">
-              Cette section accueillera les photos et vidéos des événements
-              équipés à Bordeaux et en Gironde, avec le détail du matériel
-              utilisé sur chacun.
+              Le matériel en situation, pendant le montage et une fois le lieu
+              équipé.
             </p>
           </Reveal>
+
+          <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {apercuAccueil.map((p, i) => (
+              <Reveal as="li" key={p.id} delay={i * 70}>
+                <figure className="panel overflow-hidden rounded-[3px]">
+                  <div className="relative aspect-[4/3] bg-ink-950">
+                    <Image
+                      src={p.src}
+                      alt={p.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover"
+                      style={{ objectPosition: p.focus }}
+                    />
+                  </div>
+                  <figcaption className="px-4 py-3 text-[13.5px] leading-snug text-ink-600">
+                    {p.caption}
+                  </figcaption>
+                </figure>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </section>
 

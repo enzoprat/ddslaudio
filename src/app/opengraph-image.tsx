@@ -1,13 +1,20 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { ImageResponse } from "next/og";
 
 /**
- * Image de partage générée à la volée : reprend la signature du logo
- * (DDSL laiton, filet + signal, AUDIO espacé) sur fond encre.
- * Aucun fichier binaire à maintenir ; à remplacer par un visuel photo
- * dès que des images d'événements sont disponibles.
+ * Image de partage composée au build : logo DDSL Audio sur une photo de
+ * régie assombrie. Les fichiers sont lus depuis `public/` et injectés en
+ * base64, `next/og` ne pouvant pas résoudre d'URL relative.
  */
 /** Généré au build — requis par l'export statique de l'aperçu client. */
 export const dynamic = "force-static";
+
+function asDataUrl(relativePath: string, mime: string) {
+  const bytes = readFileSync(join(process.cwd(), "public", relativePath));
+  return `data:${mime};base64,${bytes.toString("base64")}`;
+}
 
 export const alt =
   "DDSL Audio — location de matériel son, lumière et scène à Bordeaux";
@@ -15,6 +22,9 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OpengraphImage() {
+  const logo = asDataUrl("brand/ddsl-audio.png", "image/png");
+  const photo = asDataUrl("photos/regie-dj-colonnes.jpg", "image/jpeg");
+
   return new ImageResponse(
     (
       <div
@@ -24,59 +34,43 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          background:
-            "linear-gradient(140deg, #08090a 0%, #101215 55%, #08090a 100%)",
+          background: "#08090a",
           padding: "0 88px",
           color: "#f5f3ee",
         }}
       >
-        {/* Signature */}
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <span
-            style={{
-              fontSize: 62,
-              fontWeight: 700,
-              letterSpacing: "0.04em",
-              color: "#d8a83a",
-            }}
-          >
-            DDSL
-          </span>
-          <span
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              gap: 4,
-              height: 34,
-            }}
-          >
-            {[10, 26, 7, 34, 16].map((h, i) => (
-              <span
-                key={i}
-                style={{
-                  width: 5,
-                  height: h,
-                  background: i % 2 ? "#d8a83a" : "rgba(245,243,238,0.45)",
-                }}
-              />
-            ))}
-          </span>
-          <span
-            style={{
-              fontSize: 40,
-              fontWeight: 600,
-              letterSpacing: "0.34em",
-            }}
-          >
-            AUDIO
-          </span>
-        </div>
+        {/* Photo de fond, largement assombrie pour rester lisible */}
+        <img
+          src={photo}
+          alt=""
+          width={630}
+          height={630}
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            width: 630,
+            height: 630,
+            objectFit: "cover",
+            opacity: 0.42,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(90deg, #08090a 45%, rgba(8,9,10,0.65) 72%, rgba(8,9,10,0.35) 100%)",
+          }}
+        />
+
+        <img src={logo} alt="" width={300} height={205} />
 
         <div
           style={{
             height: 1,
             width: 220,
-            margin: "40px 0",
+            margin: "34px 0",
             background:
               "linear-gradient(to right, #d8a83a, rgba(216,168,58,0))",
           }}

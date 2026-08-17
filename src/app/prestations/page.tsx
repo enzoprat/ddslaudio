@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Kicker } from "@/components/ui/Kicker";
@@ -7,6 +8,7 @@ import { Glyph } from "@/components/ui/Glyph";
 import { SignalLine } from "@/components/ui/Ambience";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { categories } from "@/data/catalog";
+import { photo } from "@/data/photos";
 
 export const metadata: Metadata = {
   title: "Location, installation et sonorisation d'événement à Bordeaux",
@@ -56,6 +58,8 @@ const COMBOS = [
 ];
 
 export default function PrestationsPage() {
+  const visuelInstallation = photo("montage-systeme-salle");
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -162,6 +166,23 @@ export default function PrestationsPage() {
                   l'arrivée du public.
                 </p>
               </div>
+
+              {visuelInstallation && (
+                <figure className="w-full lg:w-[420px]">
+                  <div className="relative aspect-[3/2] overflow-hidden rounded-[3px] bg-ink-950">
+                    <Image
+                      src={visuelInstallation.src}
+                      alt={visuelInstallation.alt}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 420px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <figcaption className="mt-3 text-[13.5px] leading-snug text-paper-200/65">
+                    {visuelInstallation.caption}
+                  </figcaption>
+                </figure>
+              )}
             </div>
           </Reveal>
 

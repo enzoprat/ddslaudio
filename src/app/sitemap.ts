@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { categories, products } from "@/data/catalog";
+import { categories } from "@/data/catalog";
+import { listeProduitsPublics } from "@/lib/catalogue";
 import { site } from "@/data/site";
 
 /**
@@ -9,7 +10,7 @@ import { site } from "@/data/site";
 /** Généré au build — requis par l'export statique de l'aperçu client. */
 export const dynamic = "force-static";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const url = (path: string) => `${site.baseUrl}${path}`;
 
@@ -30,7 +31,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly",
   }));
 
-  const productUrls: MetadataRoute.Sitemap = products.map((p) => ({
+  const productUrls: MetadataRoute.Sitemap = (await listeProduitsPublics()).map((p) => ({
     url: url(`/materiel/${p.category}/${p.id}`),
     priority: 0.6,
     changeFrequency: "monthly",

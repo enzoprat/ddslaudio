@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { ProductMedia } from "./ProductMedia";
 import { AddToQuoteButton } from "@/components/quote/AddToQuote";
-import { categories, productLabel, type Product } from "@/data/catalog";
+import {
+  categories,
+  formatPrice,
+  productLabel,
+  type Product,
+} from "@/data/catalog";
 
 function href(product: Product) {
   const cat = categories.find((c) => c.id === product.category);
@@ -12,6 +17,7 @@ function href(product: Product) {
 
 export function ProductCard({ product }: { product: Product }) {
   const label = productLabel(product);
+  const prix = formatPrice(product.price);
 
   return (
     <article className="panel group relative flex h-full flex-col overflow-hidden rounded-[3px] transition-colors duration-300 hover:border-brass-600/45">
@@ -51,6 +57,11 @@ export function ProductCard({ product }: { product: Product }) {
         </p>
 
         <div className="mt-auto pt-5">
+          {prix && (
+            <p className="mb-3 font-display font-semibold tracking-[-0.02em] text-[1.15rem] leading-none text-ink-900">
+              {prix}
+            </p>
+          )}
           {product.installationAvailable && (
             <p className="mb-3 flex items-center gap-2 text-[13px] text-ink-500">
               Installation possible
@@ -78,6 +89,8 @@ export function SystemRow({
   product: Product;
   index: number;
 }) {
+  const prix = formatPrice(product.price);
+
   return (
     <article className="panel group grid gap-5 rounded-[3px] p-5 transition-colors duration-300 hover:border-brass-600/45 sm:grid-cols-[132px_minmax(0,1fr)_auto] sm:items-center sm:p-6">
       <Link href={href(product)} aria-label={`Fiche : ${product.name}`}>
@@ -120,6 +133,11 @@ export function SystemRow({
       </div>
 
       <div className="flex flex-col gap-2 sm:w-[210px]">
+        {prix && (
+          <p className="font-display font-semibold tracking-[-0.02em] text-[1.25rem] leading-none text-ink-900">
+            {prix}
+          </p>
+        )}
         <AddToQuoteButton product={product} />
         <Link
           href={href(product)}

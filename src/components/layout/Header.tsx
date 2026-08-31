@@ -7,6 +7,7 @@ import { Logo } from "@/components/brand/Logo";
 import { Glyph } from "@/components/ui/Glyph";
 import { useQuote } from "@/components/quote/QuoteProvider";
 import { categories, categoryCount } from "@/data/catalog";
+import { useCatalogue } from "@/components/catalog/CatalogueProvider";
 
 const NAV = [
   { href: "/prestations", label: "Prestations" },
@@ -18,6 +19,7 @@ const NAV = [
 
 export function Header() {
   const pathname = usePathname();
+  const catalogue = useCatalogue();
   const { count, open, hydrated } = useQuote();
   const [scrolled, setScrolled] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
@@ -209,7 +211,7 @@ export function Header() {
                           {c.name}
                         </span>
                         <span className="tech-sm text-brass-700">
-                          {String(categoryCount(c.id)).padStart(2, "0")}
+                          {String(categoryCount(catalogue, c.id)).padStart(2, "0")}
                         </span>
                       </span>
                       <span className="mt-0.5 block text-[13px] leading-snug text-ink-600">

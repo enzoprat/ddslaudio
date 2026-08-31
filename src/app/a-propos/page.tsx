@@ -6,6 +6,7 @@ import { SignalLine } from "@/components/ui/Ambience";
 import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import { parcSummary } from "@/data/catalog";
+import { listeProduitsPublics } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "À propos — DDSL Audio, prestataire technique à Bordeaux",
@@ -37,8 +38,8 @@ const PRINCIPES = [
   },
 ];
 
-export default function AProposPage() {
-  const parc = parcSummary();
+export default async function AProposPage() {
+  const parc = parcSummary(await listeProduitsPublics());
 
   return (
     <>

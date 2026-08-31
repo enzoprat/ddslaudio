@@ -8,10 +8,10 @@ import { Glyph } from "@/components/ui/Glyph";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import {
   categories,
-  products,
   productsByCategory,
   categoryCount,
 } from "@/data/catalog";
+import { listeProduitsPublics } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "Catalogue — location de matériel événementiel à Bordeaux",
@@ -20,7 +20,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/materiel" },
 };
 
-export default function MaterielPage() {
+export default async function MaterielPage() {
+  const produits = await listeProduitsPublics();
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -40,7 +42,7 @@ export default function MaterielPage() {
           aria-hidden="true"
         />
         <div className="relative mx-auto max-w-[1400px] px-4 pb-12 pt-14 sm:px-6 sm:pb-14 sm:pt-20">
-          <Kicker>Catalogue · {products.length} références</Kicker>
+          <Kicker>Catalogue · {produits.length} références</Kicker>
           <h1 className="display-lg mt-5 max-w-3xl text-ink-900">
             Le parc technique, référence par référence
           </h1>
@@ -88,7 +90,7 @@ export default function MaterielPage() {
                 <Glyph name={c.id} className="h-4 w-4 opacity-60" />
                 {c.name}
                 <span className="tech-sm text-brass-700">
-                  {String(categoryCount(c.id)).padStart(2, "0")}
+                  {String(categoryCount(produits, c.id)).padStart(2, "0")}
                 </span>
               </a>
             </li>
@@ -102,7 +104,7 @@ export default function MaterielPage() {
           <CategorySection
             key={c.id}
             category={c}
-            products={productsByCategory(c.id)}
+            products={productsByCategory(produits, c.id)}
           />
         ))}
       </div>

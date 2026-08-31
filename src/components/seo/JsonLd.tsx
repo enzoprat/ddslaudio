@@ -1,5 +1,5 @@
 import { site } from "@/data/site";
-import { categories, products, productLabel } from "@/data/catalog";
+import { categories, productLabel } from "@/data/catalog";
 import type { Product } from "@/data/catalog";
 
 function JsonLd({ data }: { data: object }) {
@@ -134,5 +134,3 @@ export function FaqJsonLd({
     />
   );
 }
-
-export const totalReferences = products.length;

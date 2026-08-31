@@ -10,17 +10,18 @@ import {
   categories,
   getCategory,
   getProduct,
+  formatPrice,
   hasSpecs,
   productLabel,
-  products,
   productsByCategory,
 } from "@/data/catalog";
 import { site } from "@/data/site";
+import { listeProduitsPublics } from "@/lib/catalogue";
 
 type Params = { params: Promise<{ categorie: string; produit: string }> };
 
-export function generateStaticParams() {
-  return products.map((p) => {
+export async function generateStaticParams() {
+  return (await listeProduitsPublics()).map((p) => {
     const cat = categories.find((c) => c.id === p.category);
     return { categorie: cat!.slug, produit: p.id };
   });
@@ -28,7 +29,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { categorie, produit } = await params;
-  const product = getProduct(produit);
+  const product = getProduct(await listeProduitsPublics(), produit);
   const category = getCategory(categorie);
   if (!product || !category) return {};
 
@@ -52,13 +53,15 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Params) {
   const { categorie, produit } = await params;
-  const product = getProduct(produit);
+  const produits = await listeProduitsPublics();
+  const product = getProduct(produits, produit);
   const category = getCategory(categorie);
 
   if (!product || !category || product.category !== category.id) notFound();
 
   const label = productLabel(product);
-  const related = productsByCategory(category.id).filter(
+  const prix = formatPrice(product.price);
+  const related = productsByCategory(produits, category.id).filter(
     (p) => p.id !== product.id && p.kind === "unit",
   );
 
@@ -206,9 +209,14 @@ export default async function ProductPage({ params }: Params) {
           {/* Colonne demande */}
           <aside className="lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
             <div className="panel rounded-[3px] p-6">
-              <div className="border-b border-ink-950/10 pb-4">
+              <div className="flex items-baseline justify-between gap-4 border-b border-ink-950/10 pb-4">
                 <h2 className="tech text-ink-800">Ajouter à ma demande</h2>
-                </div>
+                {prix && (
+                  <span className="font-display font-semibold tracking-[-0.02em] text-[1.4rem] leading-none text-ink-900">
+                    {prix}
+                  </span>
+                )}
+              </div>
 
               <dl className="grid gap-2 py-4 text-[14px]">
                 {product.availableQuantity !== null && (

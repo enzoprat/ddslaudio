@@ -16,5 +16,8 @@ tsconfig.tsbuildinfo
 /.claude
 .vercel
 
+# Catalogue écrit depuis /admin en développement (en production : Vercel Blob)
+/.catalogue-local
+
 # macOS
 .DS_Store

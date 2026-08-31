@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProduct, productLabel } from "@/data/catalog";
+import { listeProduits } from "@/lib/catalogue";
 import { site } from "@/data/site";
 
 /**
@@ -95,6 +96,9 @@ export async function POST(request: Request) {
   }
 
   const items = Array.isArray(body.items) ? body.items.slice(0, 80) : [];
+  // Liste complète, sommeil compris : une sélection faite avant la mise en
+  // sommeil d'une fiche doit rester lisible dans le message.
+  const catalogue = await listeProduits();
 
   const lines: string[] = [];
   lines.push(
@@ -150,7 +154,7 @@ export async function POST(request: Request) {
   if (items.length) {
     lines.push("", `— Matériel sélectionné (${items.length}) —`);
     for (const it of items) {
-      const product = getProduct(it.productId);
+      const product = getProduct(catalogue, it.productId);
       if (!product) continue;
       const label = productLabel(product);
       lines.push(

@@ -9,8 +9,10 @@ import { WhatsAppFab } from "@/components/layout/WhatsApp";
 import { QuoteProvider } from "@/components/quote/QuoteProvider";
 import { QuoteDrawer } from "@/components/quote/QuoteDrawer";
 import { QuoteToast } from "@/components/quote/QuoteToast";
+import { CatalogueProvider } from "@/components/catalog/CatalogueProvider";
 import { LocalBusinessJsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/data/site";
+import { listeProduitsPublics } from "@/lib/catalogue";
 
 /* Titrage : grotesque de signalétique, dessiné pour les grands corps.
    Remplace le condensé tout-capitales, qui donnait au site un air de
@@ -74,11 +76,13 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const produits = await listeProduitsPublics();
+
   return (
     <html
       lang="fr"
@@ -90,18 +94,20 @@ export default function RootLayout({
           Aller au contenu
         </a>
 
-        <QuoteProvider>
-          <Header />
-          <main id="contenu" className="pt-[var(--header-h)]">
-            {children}
-          </main>
-          <Footer />
-          <QuoteDrawer />
-          <QuoteToast />
-          <MobileActionBar />
-          <WhatsAppFab />
-          <div className="h-16 lg:hidden" aria-hidden="true" />
-        </QuoteProvider>
+        <CatalogueProvider produits={produits}>
+          <QuoteProvider>
+            <Header />
+            <main id="contenu" className="pt-[var(--header-h)]">
+              {children}
+            </main>
+            <Footer />
+            <QuoteDrawer />
+            <QuoteToast />
+            <MobileActionBar />
+            <WhatsAppFab />
+            <div className="h-16 lg:hidden" aria-hidden="true" />
+          </QuoteProvider>
+        </CatalogueProvider>
 
         <LocalBusinessJsonLd />
       </body>

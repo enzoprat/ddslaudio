@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: import.meta.dirname,
   images: {
     formats: ["image/avif", "image/webp"],
+    // Photos déposées depuis /admin : elles sont hébergées sur Vercel Blob.
+    remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
   },
   poweredByHeader: false,
   ...(isPages

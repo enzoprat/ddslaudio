@@ -34,9 +34,10 @@ jobs:
 
       - run: npm ci
 
-      # L'export statique n'accepte pas de route handler POST.
+      # L'export statique n'accepte ni route handler POST ni action serveur :
+      # l'aperçu client n'embarque donc pas l'administration.
       - name: Retirer les routes serveur
-        run: rm -rf src/app/api
+        run: rm -rf src/app/api src/app/admin
 
       - name: Build statique
         env:

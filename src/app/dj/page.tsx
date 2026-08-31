@@ -7,6 +7,7 @@ import { Beams, SignalLine } from "@/components/ui/Ambience";
 import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import { productsByCategory } from "@/data/catalog";
+import { listeProduitsPublics } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
   title: "DJ pour soirée, mariage et événement à Bordeaux",
@@ -53,8 +54,8 @@ const CAS = [
   },
 ];
 
-export default function DjPage() {
-  const regie = productsByCategory("regie-dj");
+export default async function DjPage() {
+  const regie = productsByCategory(await listeProduitsPublics(), "regie-dj");
 
   return (
     <>

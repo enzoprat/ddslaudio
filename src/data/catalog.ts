@@ -25,6 +25,9 @@ export type CategoryId =
 
 export type ProductKind = "unit" | "system";
 
+/** `sommeil` : la fiche est conservée mais retirée du site public. */
+export type ProductStatus = "actif" | "sommeil";
+
 export type PackItem = {
   /** Libellé de l'élément qui compose le système. */
   label: string;
@@ -67,7 +70,17 @@ export type Product = {
     label: string;
     placeholder: string;
   } | null;
+  /** Prix en euros, saisi depuis /admin. `null` = non communiqué, donc masqué. */
+  price: number | null;
+  status: ProductStatus;
 };
+
+/**
+ * Le catalogue d'origine ci-dessous sert de graine : il ne porte ni prix ni
+ * statut, ceux-ci n'existant qu'à partir de l'administration. Le store les
+ * complète (`prix inconnu`, `actif`) — voir src/lib/catalogue.ts.
+ */
+export type SeedProduct = Omit<Product, "price" | "status">;
 
 export type Category = {
   id: CategoryId;
@@ -183,13 +196,13 @@ export const categories: Category[] = [
 
 /* ───────────────────────────── OPTIONS COMMUNES ───────────────────────────── */
 
-const OPT_INSTALL: ProductOption = {
+export const OPT_INSTALL: ProductOption = {
   id: "installation",
   label: "Installation et mise en service",
   hint: "DDSL Audio livre, installe, câble et règle sur place.",
 };
 
-const OPT_OPERATOR: ProductOption = {
+export const OPT_OPERATOR: ProductOption = {
   id: "technicien",
   label: "Technicien présent pendant l'événement",
   hint: "Un opérateur reste sur place pour piloter et intervenir.",
@@ -200,7 +213,7 @@ const OPT_OPERATOR: ProductOption = {
  *  réelles de DDSL Audio. Ils ne sont pas affichés en attendant.
  * ──────────────────────────────────────────────────────────────────── */
 
-export const products: Product[] = [
+export const seedProducts: SeedProduct[] = [
   /* ── SONORISATION ─────────────────────────────────────────────── */
   {
     id: "systeme-sono-01",
@@ -577,23 +590,48 @@ export function getCategory(slug: string): Category | undefined {
   return categories.find((c) => c.slug === slug);
 }
 
-export function getProduct(id: string): Product | undefined {
+/**
+ * Les helpers ci-dessous prennent la liste en argument : depuis l'ajout de
+ * l'administration, elle n'est plus figée dans ce fichier mais chargée par
+ * src/lib/catalogue.ts.
+ */
+export function getProduct(
+  products: Product[],
+  id: string,
+): Product | undefined {
   return products.find((p) => p.id === id);
 }
 
-export function productsByCategory(categoryId: CategoryId): Product[] {
+export function productsByCategory(
+  products: Product[],
+  categoryId: CategoryId,
+): Product[] {
   return products.filter((p) => p.category === categoryId);
 }
 
-export function categoryCount(categoryId: CategoryId): number {
-  return productsByCategory(categoryId).length;
+export function categoryCount(
+  products: Product[],
+  categoryId: CategoryId,
+): number {
+  return productsByCategory(products, categoryId).length;
 }
-
-export const featuredProducts = products.filter((p) => p.featured);
 
 /** Vrai si la fiche contient au moins une donnée technique à afficher. */
 export function hasSpecs(product: Product): boolean {
   return Object.keys(product.specifications).length > 0;
+}
+
+/**
+ * Montant en euros. `null` (prix non renseigné) ne s'affiche pas : on ne
+ * publie pas « prix sur demande » à la place d'une donnée manquante.
+ */
+export function formatPrice(price: number | null): string | null {
+  if (price === null) return null;
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+    maximumFractionDigits: 2,
+  }).format(price);
 }
 
 /** Libellé court « marque + modèle » quand les deux sont connus. */
@@ -606,8 +644,8 @@ export function productLabel(product: Product): string | null {
  * Résumé du parc affiché en façade (hero, page matériel).
  * Chaque ligne est un fait vérifiable, dérivé des données ci-dessus.
  */
-export function parcSummary() {
-  const qty = (id: string) => getProduct(id)?.availableQuantity ?? null;
+export function parcSummary(products: Product[]) {
+  const qty = (id: string) => getProduct(products, id)?.availableQuantity ?? null;
   const projecteurs = qty("videoprojecteur");
   const ecrans = (qty("ecran-projection") ?? 0) + (qty("ecran-geant") ?? 0);
   const analogiques = qty("console-analogique");
@@ -617,7 +655,7 @@ export function parcSummary() {
     let detail: string;
     switch (c.id) {
       case "sonorisation":
-        detail = `${categoryCount("sonorisation")} systèmes complets`;
+        detail = `${categoryCount(products, "sonorisation")} systèmes complets`;
         break;
       case "lumiere":
         detail = "Lyres";

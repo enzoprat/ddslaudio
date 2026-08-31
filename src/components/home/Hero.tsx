@@ -3,10 +3,11 @@ import Link from "next/link";
 import { Beams, VuMeter } from "@/components/ui/Ambience";
 import { Glyph } from "@/components/ui/Glyph";
 import { parcSummary } from "@/data/catalog";
+import { listeProduitsPublics } from "@/lib/catalogue";
 import { photo } from "@/data/photos";
 
-export function Hero() {
-  const parc = parcSummary();
+export async function Hero() {
+  const parc = parcSummary(await listeProduitsPublics());
   const visuel = photo("regie-dj-colonnes");
 
   return (

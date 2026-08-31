@@ -10,6 +10,7 @@ import { Glyph } from "@/components/ui/Glyph";
 import { Beams, SignalLine } from "@/components/ui/Ambience";
 import { FaqJsonLd } from "@/components/seo/JsonLd";
 import { parcSummary, categoryCount } from "@/data/catalog";
+import { listeProduitsPublics } from "@/lib/catalogue";
 import { apercuAccueil } from "@/data/photos";
 
 export const metadata: Metadata = {
@@ -43,8 +44,9 @@ const FAQ = [
   },
 ];
 
-export default function HomePage() {
-  const parc = parcSummary();
+export default async function HomePage() {
+  const produits = await listeProduitsPublics();
+  const parc = parcSummary(produits);
 
   return (
     <>
@@ -100,7 +102,7 @@ export default function HomePage() {
                         >
                           {c.name}
                           <span className="tech-sm text-brass-700">
-                            {String(categoryCount(c.id)).padStart(2, "0")}
+                            {String(categoryCount(produits, c.id)).padStart(2, "0")}
                           </span>
                         </Link>
                       </li>

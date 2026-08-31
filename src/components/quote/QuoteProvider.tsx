@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { getProduct, type Product } from "@/data/catalog";
+import { useCatalogue } from "@/components/catalog/CatalogueProvider";
 
 const STORAGE_KEY = "ddsl-demande-v1";
 
@@ -63,6 +64,7 @@ function isValid(state: unknown): state is QuoteState {
 }
 
 export function QuoteProvider({ children }: { children: ReactNode }) {
+  const catalogue = useCatalogue();
   const [state, setState] = useState<QuoteState>(EMPTY);
   const [hydrated, setHydrated] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +81,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
           setState({
             ...EMPTY,
             ...parsed,
-            items: parsed.items.filter((i) => Boolean(getProduct(i.productId))),
+            items: parsed.items.filter((i) => Boolean(getProduct(catalogue, i.productId))),
           });
         }
       }
@@ -121,7 +123,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
   }, [lastAdded]);
 
   const add = useCallback<QuoteContextValue["add"]>((productId, opts = {}) => {
-    const product = getProduct(productId);
+    const product = getProduct(catalogue, productId);
     if (!product) return;
 
     setState((prev) => {
@@ -155,7 +157,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
     });
 
     setLastAdded(product.name);
-  }, []);
+  }, [catalogue]);
 
   const remove = useCallback((productId: string) => {
     setState((prev) => ({
@@ -165,7 +167,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setQuantity = useCallback((productId: string, quantity: number) => {
-    const product = getProduct(productId);
+    const product = getProduct(catalogue, productId);
     if (!product) return;
     if (quantity < 1) {
       setState((prev) => ({
@@ -182,7 +184,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
           : i,
       ),
     }));
-  }, []);
+  }, [catalogue]);
 
   const toggleOption = useCallback((productId: string, optionId: string) => {
     setState((prev) => ({
@@ -223,11 +225,11 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
     () =>
       state.items
         .map((item) => {
-          const product = getProduct(item.productId);
+          const product = getProduct(catalogue, item.productId);
           return product ? { item, product } : null;
         })
         .filter((x): x is { item: QuoteItem; product: Product } => x !== null),
-    [state.items],
+    [state.items, catalogue],
   );
 
   const value = useMemo<QuoteContextValue>(

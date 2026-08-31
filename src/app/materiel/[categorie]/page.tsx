@@ -11,6 +11,7 @@ import {
   CategoryItemListJsonLd,
 } from "@/components/seo/JsonLd";
 import { categories, getCategory, productsByCategory } from "@/data/catalog";
+import { listeProduitsPublics } from "@/lib/catalogue";
 
 type Params = { params: Promise<{ categorie: string }> };
 
@@ -40,7 +41,7 @@ export default async function CategoryPage({ params }: Params) {
   const category = getCategory(categorie);
   if (!category) notFound();
 
-  const items = productsByCategory(category.id);
+  const items = productsByCategory(await listeProduitsPublics(), category.id);
   const systems = items.filter((p) => p.kind === "system");
   const units = items.filter((p) => p.kind === "unit");
   const others = categories.filter((c) => c.id !== category.id);

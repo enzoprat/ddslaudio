@@ -12,8 +12,17 @@
 export const site = {
   name: "DDSL Audio",
   legalName: "DDSL Audio",
-  /** ⚠️ À CONFIRMER — domaine définitif. Surchargeable par NEXT_PUBLIC_SITE_URL. */
-  baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ddsl-audio.fr",
+  /**
+   * Domaine de production. Sans tiret, et AVEC `www` : l'hébergement
+   * redirige `ddslaudio.fr` vers `www.ddslaudio.fr` en 308, c'est donc
+   * cette forme qui est canonique. Une canonique pointant vers l'URL
+   * qui redirige ferait perdre le bénéfice du signal.
+   *
+   * Toutes les URL absolues en découlent : canoniques, sitemap,
+   * robots.txt, Open Graph et données structurées.
+   * Surchargeable par NEXT_PUBLIC_SITE_URL.
+   */
+  baseUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.ddslaudio.fr",
   city: "Bordeaux",
   area: "Gironde et région bordelaise",
 
@@ -22,7 +31,7 @@ export const site = {
     phone: "06 41 80 89 82" as string | null,
     phoneHref: "+33641808982" as string | null,
     whatsapp: "+33641808982" as string | null,
-    email: null as string | null, // ex. "contact@ddsl-audio.fr"
+    email: "contact@ddslaudio.fr" as string | null,
 
     /* Identité légale relevée sur societe.com (SIREN 794 913 798).
        À faire confirmer par DDSL Audio avant la mise en ligne. */

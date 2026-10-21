@@ -77,7 +77,7 @@ export default function ContactPage() {
         <div className="mx-auto grid max-w-[1400px] gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
           <Reveal>
             {hasDirect ? (
-              <div className="panel rounded-[3px] p-6 sm:p-7">
+              <div className="panel rounded-panel p-6 sm:p-7">
                 <h2 className="tech text-brass-600">Joindre directement</h2>
                 <ul className="mt-5 space-y-3 text-[17px]">
                   {contact.phone && (
@@ -121,7 +121,7 @@ export default function ContactPage() {
                 )}
               </div>
             ) : (
-              <div className="panel rounded-[3px] p-6 sm:p-7">
+              <div className="panel rounded-panel p-6 sm:p-7">
                 <h2 className="tech text-brass-600">Par écrit</h2>
                 <p className="mt-5 text-[15.5px] leading-relaxed text-ink-600">
                   Le formulaire est la voie la plus directe pour le moment. Les

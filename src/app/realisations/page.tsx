@@ -6,7 +6,6 @@ import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { Glyph } from "@/components/ui/Glyph";
 import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
-import { SignalLine } from "@/components/ui/Ambience";
 import { categories } from "@/data/catalog";
 import { photos } from "@/data/photos";
 import { realisations } from "@/data/realisations";
@@ -72,7 +71,7 @@ export default function RealisationsPage() {
                   delay={i * 60}
                   className={SPANS[i % SPANS.length]}
                 >
-                  <article className="panel group relative flex h-full flex-col overflow-hidden rounded-[3px]">
+                  <article className="panel group relative flex h-full flex-col overflow-hidden rounded-panel">
                     {r.cover && (
                       <div className="relative min-h-[200px] flex-1 overflow-hidden bg-paper-200">
                         <Image
@@ -100,7 +99,7 @@ export default function RealisationsPage() {
                           {r.services.map((s) => (
                             <li
                               key={s}
-                              className="rounded-[3px] border border-ink-950/13 px-2.5 py-1 text-[12px] text-ink-600"
+                              className="rounded-panel border border-ink-950/13 px-2.5 py-1 text-[12px] text-ink-600"
                             >
                               {s}
                             </li>
@@ -125,7 +124,7 @@ export default function RealisationsPage() {
                   delay={i * 60}
                   className={SPANS[i % SPANS.length]}
                 >
-                  <figure className="panel flex h-full flex-col overflow-hidden rounded-[3px]">
+                  <figure className="panel flex h-full flex-col overflow-hidden rounded-panel">
                     <div className="relative min-h-[190px] flex-1 bg-ink-950">
                       <Image
                         src={p.src}
@@ -145,7 +144,7 @@ export default function RealisationsPage() {
             </ul>
 
             <Reveal delay={90}>
-              <div className="panel mt-10 rounded-[3px] p-7 sm:p-9">
+              <div className="panel mt-10 rounded-panel p-7 sm:p-9">
                 <span className="tech text-brass-700">Fiches détaillées</span>
                 <h2 className="display-md mt-5 max-w-2xl text-ink-900">
                   Le détail événement par événement viendra ensuite
@@ -184,7 +183,7 @@ export default function RealisationsPage() {
                 <Reveal as="li" key={c.id} delay={i * 50}>
                   <Link
                     href={`/materiel/${c.slug}`}
-                    className="panel group flex h-full items-start gap-4 rounded-[3px] p-5 transition-colors hover:border-brass-600/45"
+                    className="panel panel-link group flex h-full items-start gap-4 rounded-panel p-5"
                   >
                     <Glyph
                       name={c.id}
@@ -203,7 +202,6 @@ export default function RealisationsPage() {
               ))}
             </ul>
           </div>
-          <SignalLine className="mt-16 opacity-40" />
         </section>
       )}
 

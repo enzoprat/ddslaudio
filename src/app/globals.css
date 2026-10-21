@@ -28,21 +28,52 @@
   --color-paper-300: #e8e5db;
   --color-paper-400: #d8d4c6;
 
-  --color-brass-100: #f7e9c6;
-  --color-brass-200: #eed9a4;
-  --color-brass-300: #e0c179;
-  --color-brass-400: #d0ac5c;
-  --color-brass-500: #b8903f;
-  --color-brass-600: #96702c;
-  --color-brass-700: #6f521f;
-  --color-brass-900: #33260f;
+  /* Nuit : noirs chauds, accordés aux photos de salle (ambre, bois,
+     laiton). Un noir neutre y aurait l'air bleu et froid.
+     Distincts de `ink`, qui reste la couleur du texte. */
+  --color-night-950: #0a0907;
+  --color-night-900: #12100e;
+  --color-night-800: #1b1815;
+  --color-night-700: #272320;
+  --color-night-600: #3a342e;
+
+  /* Sable : fond alterné, pour que deux sections voisines ne soient
+     pas du même blanc. */
+  --color-sand-100: #f7f3ea;
+  --color-sand-200: #efe9db;
+
+  --color-brass-100: #fbf0cd;
+  --color-brass-200: #f4e0a2;
+  --color-brass-300: #e8c86b;
+  --color-brass-400: #d9ae3e;
+  --color-brass-500: #bd9020;
+  --color-brass-600: #8d6a0e;
+  --color-brass-700: #6d5109;
+  --color-brass-900: #332507;
 
   --color-signal: #2f8f4a;
   --color-alert: #bd3f28;
 
-  --font-display: var(--font-display-family), "Helvetica Neue", sans-serif;
+  /* SF Pro Display quand la machine l'a (Apple), sinon Archivo, chargé. */
+  --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont,
+    var(--font-display-family), "Helvetica Neue", sans-serif;
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono-tech), ui-monospace, monospace;
+
+  /* Rayons : `panel` pour les surfaces, `ctl` pour les commandes.
+     Les 3 px d'origine donnaient au site un air de maquette. */
+  --radius-panel: 12px;
+  --radius-lg: 18px;
+  --radius-ctl: 9px;
+
+  /* Élévation. Ombres longues et très diffuses : sur un fond crème,
+     une ombre courte et dense fait salissure. */
+  --shadow-1: 0 1px 2px rgb(20 16 10 / 0.05);
+  --shadow-2:
+    0 1px 2px rgb(20 16 10 / 0.04), 0 10px 28px -18px rgb(20 16 10 / 0.26);
+  --shadow-3:
+    0 1px 2px rgb(20 16 10 / 0.05), 0 18px 40px -22px rgb(20 16 10 / 0.45);
+  --shadow-4: 0 40px 80px -40px rgb(10 9 7 / 0.55);
 
   --ease-fader: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -58,25 +89,33 @@
   --text-muted: #71777f;
   --line: color-mix(in srgb, #0b0c0d 11%, transparent);
   --line-strong: color-mix(in srgb, #0b0c0d 22%, transparent);
-  --line-brass: color-mix(in srgb, #96702c 55%, transparent);
-  --accent: #96702c;
+  --line-brass: color-mix(in srgb, #8d6a0e 55%, transparent);
+  --accent: #8d6a0e;
   --header-h: 70px;
 }
 
 /* Bloc « scène » : la respiration noire du site. */
 .stage {
-  --surface: #121316;
-  --surface-sunken: #0b0c0d;
-  --surface-raised: #191b1f;
+  --surface: #12100e;
+  --surface-sunken: #0a0907;
+  --surface-raised: #1b1815;
   --text: #ffffff;
   --text-soft: #f3f1ea;
-  --text-muted: color-mix(in srgb, #f3f1ea 55%, transparent);
+  --text-muted: color-mix(in srgb, #f3f1ea 58%, transparent);
   --line: color-mix(in srgb, #ffffff 12%, transparent);
   --line-strong: color-mix(in srgb, #ffffff 24%, transparent);
-  --line-brass: color-mix(in srgb, #d0ac5c 45%, transparent);
-  --accent: #e0c179;
-  background-color: var(--color-ink-950);
+  --line-brass: color-mix(in srgb, #d9ae3e 45%, transparent);
+  --accent: #e8c86b;
+  background-color: var(--color-night-950);
   color: var(--color-paper-200);
+}
+
+/* Section sur fond sable : sert à séparer deux blocs clairs voisins
+   sans poser de trait. */
+.sand {
+  --surface: #ffffff;
+  --surface-sunken: var(--color-sand-200);
+  background-color: var(--color-sand-100);
 }
 
 /* ───────────────────────────── Base ───────────────────────────── */
@@ -141,8 +180,11 @@ textarea {
   color: inherit;
 }
 
+/* `--accent` plutôt que le laiton foncé : sur un bloc sombre (pied de
+   page, bandeau scène) l'anneau de focus devenait invisible. La valeur
+   ne change pas sur fond clair. */
 :focus-visible {
-  outline: 2px solid var(--color-brass-600);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -159,13 +201,32 @@ input[type="number"] {
 
 /* ───────────────────────── Typographie utilitaire ───────────────────────── */
 
-/* Surtitre de section : sans-serif, capitales sobres.
-   (Anciennement en monospace très espacé — trop « gabarit ».) */
+/* Surtitre numéroté (« 01 Location ») : le numéro passe en retrait,
+   il situe sans crier. Remplace le « 01 — LOCATION » en capitales. */
+.step-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--accent);
+}
+
+.step-num {
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+/* Petit titre de bloc.
+   Ni monospace espacé, ni capitales : les deux faisaient gabarit.
+   Un corps légèrement réduit et une graisse marquée suffisent à le
+   distinguer du texte courant. */
 .tech {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: -0.005em;
   font-weight: 600;
 }
 
@@ -177,34 +238,59 @@ input[type="number"] {
   font-weight: 500;
 }
 
+/* Échelle de titrage.
+   Le crénage se resserre à mesure que le corps grandit : c'est ce qui
+   distingue un titre composé d'un titre simplement agrandi. La graisse
+   monte aussi, SF Pro Display tenant très bien le 700 en grand corps. */
 .display-xl {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2.6rem, 7.2vw, 5.25rem);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+  font-weight: 700;
+  font-size: clamp(2.9rem, 7.8vw, 5.9rem);
+  line-height: 0.93;
+  letter-spacing: -0.042em;
 }
 
 .display-lg {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
-  line-height: 1.04;
-  letter-spacing: -0.028em;
+  font-weight: 700;
+  font-size: clamp(2.05rem, 4.8vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.034em;
 }
 
 .display-md {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.45rem, 2.8vw, 2rem);
-  line-height: 1.12;
-  letter-spacing: -0.022em;
+  font-weight: 650;
+  font-size: clamp(1.5rem, 2.9vw, 2.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.026em;
+}
+
+/* Titre de carte : sous le display-md, au-dessus du texte courant. */
+.display-sm {
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: 1.175rem;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
 }
 
 .lede {
-  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
-  line-height: 1.6;
+  font-size: clamp(1.09rem, 1.6vw, 1.28rem);
+  line-height: 1.55;
+  letter-spacing: -0.011em;
   color: var(--text-soft);
+  max-width: 62ch;
+}
+
+/* Chiffre affiché en grand (compteurs, capacités). Tabulaire, pour que
+   deux nombres côte à côte s'alignent. */
+.numeral {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
 }
 
 .stage .lede {
@@ -237,11 +323,37 @@ input[type="number"] {
   background: var(--surface-raised);
   border: 1px solid var(--line);
   position: relative;
-  box-shadow: 0 1px 2px color-mix(in srgb, #0b0c0d 5%, transparent);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-2);
 }
 
 .stage .panel {
   box-shadow: none;
+}
+
+/* Panneau cliquable : il se soulève, sinon rien ne distingue une
+   carte inerte d'une carte qui mène quelque part. */
+.panel-link {
+  transition:
+    transform 0.22s var(--ease-fader),
+    box-shadow 0.22s var(--ease-fader),
+    border-color 0.22s;
+}
+
+.panel-link:hover {
+  transform: translateY(-3px);
+  border-color: var(--line-brass);
+  box-shadow: var(--shadow-3);
+}
+
+.stage .panel-link:hover {
+  box-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-link:hover {
+    transform: none;
+  }
 }
 
 /* Grille de perforation façade de rack, très discrète */
@@ -278,6 +390,123 @@ input[type="number"] {
   opacity: 0.05;
 }
 
+/* Entrée du hero : montée courte, décalée d'un élément à l'autre.
+   Pas d'IntersectionObserver — le bloc est visible au chargement. */
+.hero-in {
+  animation: hero-in 0.7s var(--ease-fader) both;
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in {
+    animation: none;
+  }
+}
+
+/* ───────────────────────── Images ───────────────────────── */
+
+/* Cadre d'image. Le zoom au survol est très court : au-delà, on voit
+   l'effet plutôt que la photo.
+
+   Dans `@layer components` : `position` doit rester surchargeable par
+   un utilitaire `absolute`, ce qu'une règle non layerée empêcherait
+   (elle l'emporte sur toutes les utilitaires — voir la note sur les
+   liens plus haut). */
+@layer components {
+  .media {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-night-950);
+  }
+}
+
+.media img {
+  transition: transform 0.9s var(--ease-fader);
+}
+
+.media-zoom:hover img,
+a:hover > .media img,
+.panel-link:hover .media img {
+  transform: scale(1.045);
+}
+
+/* Voile de lisibilité sur une photo qui porte du texte. Dégradé en
+   deux temps : dense au pied, presque nul en haut. */
+.media-veil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to top,
+      rgb(10 9 7 / 0.9) 0%,
+      rgb(10 9 7 / 0.62) 30%,
+      rgb(10 9 7 / 0.22) 62%,
+      rgb(10 9 7 / 0.08) 100%
+    );
+}
+
+/* Variante du hero : le voile pèse en bas à gauche, là où se pose le
+   texte, et laisse respirer le haut à droite — sinon la photo devient
+   un aplat noir et ne dit plus rien. */
+.media-veil-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to top,
+      rgb(10 9 7 / 0.88) 0%,
+      rgb(10 9 7 / 0.55) 34%,
+      rgb(10 9 7 / 0.18) 68%,
+      rgb(10 9 7 / 0.05) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgb(10 9 7 / 0.62) 0%,
+      rgb(10 9 7 / 0.3) 45%,
+      rgb(10 9 7 / 0.05) 100%
+    );
+}
+
+/* En petite largeur le texte occupe toute la surface : le dégradé
+   latéral ne protège plus rien, il faut assombrir sur toute la
+   hauteur. */
+@media (max-width: 767px) {
+  .media-veil-hero::after {
+    background: linear-gradient(
+      to top,
+      rgb(10 9 7 / 0.92) 0%,
+      rgb(10 9 7 / 0.78) 45%,
+      rgb(10 9 7 / 0.55) 75%,
+      rgb(10 9 7 / 0.3) 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media img {
+    transition: none;
+  }
+  .media-zoom:hover img,
+  a:hover > .media img,
+  .panel-link:hover .media img {
+    transform: none;
+  }
+}
+
 /* ───────────────────────── Commandes (boutons) ───────────────────────── */
 
 /* Bouton : lettrage courant, pas de capitales ni de halo.
@@ -296,14 +525,16 @@ input[type="number"] {
   color: var(--text);
   background: transparent;
   border: 1px solid var(--line-strong);
-  border-radius: 2px;
+  border-radius: var(--radius-ctl);
   cursor: pointer;
   position: relative;
   isolation: isolate;
   transition:
     color 0.18s,
     border-color 0.18s,
-    background-color 0.18s;
+    background-color 0.18s,
+    box-shadow 0.18s,
+    transform 0.18s;
 }
 
 .btn:hover {
@@ -336,11 +567,15 @@ input[type="number"] {
   color: var(--surface);
 }
 
+.btn-primary {
+  box-shadow: 0 1px 2px color-mix(in srgb, #0b0c0d 18%, transparent);
+}
+
 .btn-primary:hover {
   background: var(--color-ink-800);
   border-color: var(--color-ink-800);
   color: var(--color-paper-50);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-brass-400) 55%, transparent);
+  box-shadow: 0 6px 16px -8px color-mix(in srgb, #0b0c0d 65%, transparent);
 }
 
 .stage .btn-primary:hover {
@@ -394,6 +629,70 @@ input[type="number"] {
   text-decoration-color: currentColor;
 }
 
+/* ─────────────────── Chaîne d'étapes (déroulé) ─────────────────── */
+
+/* Les étapes sont reliées par un fil qui part de chaque nœud vers le
+   suivant : horizontal en grand écran, vertical en petit. Le fil
+   s'arrête à la dernière étape. */
+.chaine-etape {
+  position: relative;
+  padding-left: 3.25rem;
+}
+
+.chaine-noeud {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--line-brass);
+  background: var(--surface);
+}
+
+/* Fil vertical, entre un nœud et le suivant. */
+.chaine-etape:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  top: 2.9rem;
+  bottom: -2.5rem;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    var(--line-brass),
+    color-mix(in srgb, var(--accent) 12%, transparent)
+  );
+}
+
+@media (min-width: 1024px) {
+  .chaine-etape {
+    padding-left: 0;
+    padding-top: 3.5rem;
+  }
+
+  .chaine-noeud {
+    top: 0;
+  }
+
+  /* Fil horizontal : il traverse la gouttière jusqu'au nœud suivant. */
+  .chaine-etape:not(:last-child)::before {
+    left: 2.9rem;
+    top: 1.25rem;
+    right: -2.5rem;
+    bottom: auto;
+    width: auto;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--line-brass),
+      color-mix(in srgb, var(--accent) 12%, transparent)
+    );
+  }
+}
+
 /* ───────────────────────── Témoins & indicateurs ───────────────────────── */
 
 /* Témoin d'état — réservé à ce qui change vraiment (demande en cours).
@@ -428,34 +727,9 @@ input[type="number"] {
   }
 }
 
-/* ───────────────────────── Animations d'ambiance ───────────────────────── */
+/* ───────────────────────── Révélation ───────────────────────── */
 
-/* Faisceau lumineux : cône diffus, mouvement très lent */
-@keyframes beam-sweep {
-  0%,
-  100% {
-    transform: rotate(-7deg) scaleY(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: rotate(6deg) scaleY(1.06);
-    opacity: 0.78;
-  }
-}
-
-@keyframes beam-sweep-alt {
-  0%,
-  100% {
-    transform: rotate(8deg) scaleY(1.04);
-    opacity: 0.42;
-  }
-  50% {
-    transform: rotate(-5deg) scaleY(1);
-    opacity: 0.66;
-  }
-}
-
-/* Montée de fader — révélation de contenu */
+/* Montée de fader — révélation de contenu au scroll (voir Reveal.tsx). */
 @keyframes fader-up {
   from {
     opacity: 0;
@@ -471,23 +745,9 @@ input[type="number"] {
   animation: fader-up 0.7s var(--ease-fader) both;
 }
 
-/* Défilement du signal */
-@keyframes signal-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes vu-bounce {
-  0%,
-  100% {
-    transform: scaleY(0.18);
-  }
-  50% {
-    transform: scaleY(1);
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
   }
 }
 
@@ -499,7 +759,7 @@ input[type="number"] {
   padding: 0.7rem 0.85rem;
   background: var(--surface);
   border: 1px solid var(--line-strong);
-  border-radius: 2px;
+  border-radius: var(--radius-ctl);
   color: var(--text);
   transition:
     border-color 0.18s,

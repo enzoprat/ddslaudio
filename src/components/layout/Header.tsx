@@ -65,6 +65,10 @@ export function Header() {
 
   const isMateriel = pathname.startsWith("/materiel");
 
+  /* L'accueil ouvre sur une photo sombre plein cadre : le header la
+     survole, en lettrage clair, jusqu'au premier défilement. */
+  const surPhoto = pathname === "/" && !scrolled && !mobileOpen && !megaOpen;
+
   return (
     <>
       <header
@@ -81,7 +85,7 @@ export function Header() {
             className="shrink-0 py-2"
             aria-label="DDSL Audio — accueil"
           >
-            <Logo size="sm" />
+            <Logo size="sm" tone={surPhoto ? "sombre" : "clair"} />
           </Link>
 
           {/* Navigation desktop */}
@@ -104,7 +108,9 @@ export function Header() {
                 className={`flex items-center gap-1.5 px-3 py-2.5 text-[15px] font-medium transition-colors ${
                   isMateriel
                     ? "text-brass-600"
-                    : "text-ink-600 hover:text-ink-900"
+                    : surPhoto
+                      ? "text-paper-200/85 hover:text-paper-50"
+                      : "text-ink-600 hover:text-ink-900"
                 }`}
               >
                 Matériel
@@ -129,7 +135,9 @@ export function Header() {
                   className={`px-3 py-2.5 text-[15px] font-medium transition-colors ${
                     active
                       ? "text-brass-600"
-                      : "text-ink-600 hover:text-ink-900"
+                      : surPhoto
+                        ? "text-paper-200/85 hover:text-paper-50"
+                        : "text-ink-600 hover:text-ink-900"
                   }`}
                 >
                   {n.label}
@@ -142,10 +150,12 @@ export function Header() {
             <button
               type="button"
               onClick={open}
-              className={`group inline-flex h-10 items-center gap-2.5 rounded-[3px] border px-3 transition-colors ${
+              className={`group inline-flex h-10 items-center gap-2.5 rounded-panel border px-3 transition-colors ${
                 count > 0
                   ? "border-brass-600/60 bg-brass-100/50 text-brass-700"
-                  : "border-ink-950/15 text-ink-600 hover:border-ink-950/28 hover:text-ink-900"
+                  : surPhoto
+                    ? "border-white/30 text-paper-100 hover:border-white/55 hover:text-white"
+                    : "border-ink-950/15 text-ink-600 hover:border-ink-950/28 hover:text-ink-900"
               }`}
             >
               {count > 0 && <span className="led led-brass" />}
@@ -159,7 +169,11 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMobileOpen((v) => !v)}
-              className="grid h-10 w-10 place-items-center rounded-[3px] border border-ink-950/15 text-ink-800 lg:hidden"
+              className={`grid h-10 w-10 place-items-center rounded-panel border transition-colors lg:hidden ${
+                surPhoto
+                  ? "border-white/30 text-paper-50"
+                  : "border-ink-950/15 text-ink-800"
+              }`}
               aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={mobileOpen}
             >
@@ -200,7 +214,7 @@ export function Header() {
                 <li key={c.id}>
                   <Link
                     href={`/materiel/${c.slug}`}
-                    className="group flex items-start gap-3.5 rounded-[3px] p-3 transition-colors hover:bg-ink-950/4"
+                    className="group flex items-start gap-3.5 rounded-panel p-3 transition-colors hover:bg-ink-950/4"
                   >
                     <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center border border-ink-950/11 bg-paper-200 text-brass-600/85 transition-colors group-hover:border-brass-600/45 group-hover:text-brass-600">
                       <Glyph name={c.id} className="h-6 w-6" />
@@ -259,7 +273,7 @@ export function Header() {
               <li key={c.id}>
                 <Link
                   href={`/materiel/${c.slug}`}
-                  className="panel flex h-full flex-col gap-2 rounded-[3px] p-3.5"
+                  className="panel flex h-full flex-col gap-2 rounded-panel p-3.5"
                 >
                   <Glyph name={c.id} className="h-6 w-6 text-brass-600/85" />
                   <span className="font-display font-semibold tracking-[-0.02em] text-[15px] leading-tight text-ink-900">

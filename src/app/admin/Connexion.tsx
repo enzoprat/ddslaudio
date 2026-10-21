@@ -16,7 +16,7 @@ export function Connexion() {
         Gestion du catalogue DDSL Audio.
       </p>
 
-      <form action={action} className="panel mt-8 rounded-[3px] p-6">
+      <form action={action} className="panel mt-8 rounded-panel p-6">
         <label htmlFor="motdepasse" className="label">
           Mot de passe
         </label>

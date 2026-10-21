@@ -114,7 +114,7 @@ export function GuidedPath() {
       </div>
 
       {/* Questions */}
-      <div className="panel mt-8 rounded-[3px] p-6 sm:p-9">
+      <div className="panel mt-8 rounded-panel p-6 sm:p-9">
         {step === "type" && (
           <Question title="Quel événement préparez-vous ?">
             <OptionGrid>
@@ -331,7 +331,7 @@ function Option({
     <button
       type="button"
       onClick={onClick}
-      className={`group flex min-h-[64px] items-center justify-between gap-3 rounded-[3px] border px-4 py-3 text-left transition-colors ${
+      className={`group flex min-h-[64px] items-center justify-between gap-3 rounded-panel border px-4 py-3 text-left transition-colors ${
         selected
           ? "border-brass-600 bg-brass-100/60"
           : "border-ink-950/15 bg-paper-50 hover:border-brass-600/55 hover:bg-paper-200"

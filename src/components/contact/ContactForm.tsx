@@ -76,7 +76,7 @@ export function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div className="panel rounded-[3px] p-7 sm:p-9">
+      <div className="panel rounded-panel p-7 sm:p-9">
         <div className="flex items-center gap-3">
           <span className="tech text-brass-600">Message transmis</span>
         </div>
@@ -96,7 +96,7 @@ export function ContactForm() {
     <form
       onSubmit={onSubmit}
       noValidate
-      className="panel rounded-[3px] p-6 sm:p-8"
+      className="panel rounded-panel p-6 sm:p-8"
     >
       <div className="flex items-center gap-3">
         <h2 className="tech text-ink-800">Écrire à DDSL Audio</h2>
@@ -209,7 +209,7 @@ export function ContactForm() {
       {error && (
         <p
           role="alert"
-          className="mt-5 rounded-[3px] border border-alert/50 bg-alert/10 px-4 py-3 text-[14.5px] text-ink-900"
+          className="mt-5 rounded-panel border border-alert/50 bg-alert/10 px-4 py-3 text-[14.5px] text-ink-900"
         >
           {error}
         </p>

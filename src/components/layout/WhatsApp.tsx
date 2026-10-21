@@ -49,7 +49,7 @@ export function WhatsAppFab() {
       className="group fixed bottom-6 right-6 z-[55] hidden h-14 w-14 items-center justify-center rounded-full bg-ink-900 text-paper-50 shadow-[0_6px_24px_-6px_rgba(11,12,13,0.45)] transition-colors duration-200 hover:bg-brass-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass-600 lg:flex"
     >
       <WhatsAppIcon className="h-7 w-7" />
-      <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-[3px] border border-ink-950/11 bg-paper-50 px-3 py-1.5 text-[13.5px] font-medium text-ink-800 opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100">
+      <span className="pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-panel border border-ink-950/11 bg-paper-50 px-3 py-1.5 text-[13.5px] font-medium text-ink-800 opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100">
         Écrire sur WhatsApp
       </span>
     </a>

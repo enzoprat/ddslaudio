@@ -1,132 +1,122 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Beams, VuMeter } from "@/components/ui/Ambience";
+
 import { Glyph } from "@/components/ui/Glyph";
 import { parcSummary } from "@/data/catalog";
 import { listeProduitsPublics } from "@/lib/catalogue";
 import { photo } from "@/data/photos";
 
+/**
+ * Ouverture du site.
+ *
+ * Le métier se vend par ce qu'il produit : un plateau monté, éclairé,
+ * sonorisé. La photo passe donc au premier plan, plein cadre, et le
+ * texte se pose dessus — l'inverse de la vignette de 380 px qu'il y
+ * avait ici, qui réduisait le meilleur argument à une illustration.
+ *
+ * Le bandeau de catégories qui ferme le bloc joue le rôle d'une face
+ * de rack : il annonce le parc et sert de navigation.
+ */
 export async function Hero() {
   const parc = parcSummary(await listeProduitsPublics());
-  const visuel = photo("regie-dj-colonnes");
+  const visuel = photo("plateau-concert-lumiere");
 
   return (
-    <section className="relative grain overflow-hidden border-b border-ink-950/10">
-      <Beams />
-
-      {/* Trame technique, plus dense en bas */}
-      <div
-        className="pointer-events-none absolute inset-0 grid-tech opacity-[0.55]"
-        style={{
-          maskImage:
-            "linear-gradient(to bottom, transparent, black 55%, black 88%, transparent)",
-        }}
-        aria-hidden="true"
-      />
-      {/* Halo de sol */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-64"
-        style={{
-          background:
-            "radial-gradient(120% 100% at 50% 100%, rgba(192,148,66,0.10), transparent 70%)",
-        }}
-        aria-hidden="true"
-      />
-
-      <div className="relative mx-auto grid max-w-[1400px] gap-12 px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:grid-cols-[1.1fr_minmax(0,380px)] lg:items-end lg:gap-16 lg:pb-20 lg:pt-28">
-        {/* Colonne éditoriale */}
-        <div className="reveal">
-          <p className="flex flex-wrap items-center gap-x-3 gap-y-2 tech text-ink-600">
-            Bordeaux · Gironde
-            <span className="h-3 w-px bg-ink-950/14" aria-hidden="true" />
-            <span className="text-brass-700">Location &amp; prestation</span>
-          </p>
-
-          <h1 className="display-xl mt-6 max-w-[15ch] text-ink-900">
-            Son, lumière, scène, vidéo.
-            <span className="mt-2 block text-brass-700">
-              À louer seul ou installé sur place.
-            </span>
-          </h1>
-
-          <p className="lede mt-7 max-w-xl">
-            DDSL Audio loue son parc technique à Bordeaux et en Gironde. Un
-            système de sonorisation pour une soirée, une régie DJ complète, ou
-            toute une réception à équiper&nbsp;: la demande part du même
-            endroit.
-          </p>
-
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link href="/materiel" className="btn btn-primary sm:min-w-[210px]">
-              Voir le matériel
-            </Link>
-            <Link href="/demande" className="btn btn-ghost sm:min-w-[190px]">
-              Demander un devis
-            </Link>
-          </div>
-
-          <p className="mt-7 max-w-md border-l-2 border-brass-600/45 py-1 pl-4 text-[14px] leading-relaxed text-ink-500">
-            Vous prenez le matériel et vous vous débrouillez, ou DDSL Audio
-            vient l'installer. Le choix se fait au moment du devis, pas avant.
-          </p>
+    /* La marge négative annule le décalage que `main` applique pour le
+       header fixe : la photo doit passer dessous, pas commencer après. */
+    <section className="stage relative isolate -mt-[var(--header-h)] overflow-hidden">
+      {visuel && (
+        <div className="media media-veil-hero absolute inset-0">
+          <Image
+            src={visuel.src}
+            alt={visuel.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            style={{
+              objectPosition: visuel.focus ?? "50% 46%",
+              /* La salle est éclairée en rouge saturé : sans ce léger
+                 retrait, elle écrase le laiton de la charte. */
+              filter: "saturate(0.82) brightness(0.88)",
+            }}
+          />
         </div>
+      )}
 
-        {/* Panneau de rack : état du parc */}
-        <aside
-          className="panel reveal overflow-hidden rounded-[3px]"
-          style={{ animationDelay: "160ms" }}
+      <div className="relative mx-auto flex min-h-[clamp(560px,78vh,760px)] max-w-[1400px] flex-col justify-end px-4 pb-12 pt-24 sm:px-6 sm:pb-16 sm:pt-32">
+        <p className="hero-in flex flex-wrap items-center gap-x-3 gap-y-2 text-[13.5px] font-semibold text-paper-200/80">
+          Bordeaux · Gironde
+          <span className="h-3 w-px bg-white/25" aria-hidden="true" />
+          <span className="text-brass-300">Location &amp; prestation</span>
+        </p>
+
+        <h1
+          className="hero-in display-xl mt-5 max-w-[16ch] text-paper-50"
+          style={{ animationDelay: "70ms" }}
         >
-          {visuel && (
-            <div className="relative aspect-[4/3] w-full bg-ink-950">
-              <Image
-                src={visuel.src}
-                alt={visuel.alt}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 380px"
-                className="object-cover"
-              />
-            </div>
-          )}
+          Son, lumière, scène, vidéo.
+          <span className="mt-1.5 block text-brass-300">
+            À louer seul ou installé sur place.
+          </span>
+        </h1>
 
-          <header className="flex items-center justify-between gap-3 border-b border-ink-950/10 px-4 py-3">
-            <h2 className="tech text-ink-800">Le parc</h2>
-            <VuMeter bars={9} className="opacity-70" />
-          </header>
+        <p
+          className="hero-in lede mt-7 text-paper-200/85"
+          style={{ animationDelay: "140ms" }}
+        >
+          DDSL Audio loue son parc technique à Bordeaux et en Gironde. Un
+          système de sonorisation pour une soirée, une régie DJ complète, ou
+          toute une réception à équiper&nbsp;: la demande part du même endroit.
+        </p>
 
-          <ul className="divide-y divide-ink-950/8">
-            {parc.map((c) => (
-              <li key={c.id}>
-                <Link
-                  href={`/materiel/${c.slug}`}
-                  className="group flex items-center gap-3.5 px-4 py-3 transition-colors hover:bg-ink-950/4"
-                >
-                  <Glyph
-                    name={c.id}
-                    className="h-6 w-6 shrink-0 text-ink-400 transition-colors group-hover:text-brass-600"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-display font-semibold tracking-[-0.02em] text-[16px] leading-tight text-ink-900">
-                      {c.name}
-                    </span>
-                    <span className="block text-[13px] leading-tight text-ink-500">
-                      {c.detail}
-                    </span>
-                  </span>
-                  <span className="tech-sm shrink-0 text-brass-700 transition-colors group-hover:text-brass-600">
-                    {c.code}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-
-          <p className="border-t border-ink-950/10 px-4 py-3 text-[12.5px] leading-relaxed text-ink-500">
-            Chaque catégorie se loue seule ou avec les autres. Les
-            disponibilités sont vérifiées à votre date avant l'envoi du devis.
-          </p>
-        </aside>
+        <div
+          className="hero-in mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+          style={{ animationDelay: "210ms" }}
+        >
+          <Link href="/materiel" className="btn btn-invert sm:min-w-[210px]">
+            Voir le matériel
+          </Link>
+          <Link
+            href="/besoin-conseil"
+            className="btn border-white/30 text-paper-50 hover:border-brass-300/70 sm:min-w-[210px]"
+          >
+            Je ne sais pas quoi choisir
+          </Link>
+        </div>
       </div>
+
+      {/* Face de rack : le parc en une ligne, et l'accès aux catégories. */}
+      <nav
+        aria-label="Catégories de matériel"
+        className="relative border-t border-white/12 bg-night-950/55 backdrop-blur-md"
+      >
+        <ul className="mx-auto grid max-w-[1400px] grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+          {parc.map((c) => (
+            <li key={c.id} className="border-b border-white/10 lg:border-b-0">
+              <Link
+                href={`/materiel/${c.slug}`}
+                className="group flex h-full items-center gap-3 border-white/10 px-4 py-4 transition-colors hover:bg-white/[0.07] lg:border-l lg:first:border-l-0"
+              >
+                <Glyph
+                  name={c.id}
+                  className="h-6 w-6 shrink-0 text-paper-200/45 transition-colors group-hover:text-brass-300"
+                />
+                <span className="min-w-0">
+                  <span className="block text-[14.5px] font-semibold leading-tight text-paper-50">
+                    {c.name}
+                  </span>
+                  {/* Le détail est masqué sur les petites largeurs : à deux
+                      colonnes il se coupait au milieu d'un mot. */}
+                  <span className="mt-0.5 hidden truncate text-[12.5px] leading-tight text-paper-200/55 sm:block">
+                    {c.detail}
+                  </span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </section>
   );
 }

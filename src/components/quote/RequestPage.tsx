@@ -210,7 +210,7 @@ export function RequestPage() {
         {/* Formulaire */}
         <form onSubmit={onSubmit} noValidate className="order-2 lg:order-1">
           {brief && (
-            <div className="panel mb-8 rounded-[3px] p-5">
+            <div className="panel mb-8 rounded-panel p-5">
               <h2 className="tech text-brass-600">Ce que vous nous avez dit</h2>
               <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-[14px] text-ink-600">
                 {labelFor(eventTypes, brief.eventType) && (
@@ -420,7 +420,7 @@ export function RequestPage() {
           </Fieldset>
 
           {/* Récapitulatif avant envoi */}
-          <div className="panel mt-8 rounded-[3px] p-5">
+          <div className="panel mt-8 rounded-panel p-5">
             <h2 className="tech text-brass-600">Avant d'envoyer</h2>
             <ul className="mt-3 space-y-1.5 text-[14.5px] text-ink-700">
               <li>
@@ -473,7 +473,7 @@ export function RequestPage() {
           {error && (
             <p
               role="alert"
-              className="mt-5 rounded-[3px] border border-alert/50 bg-alert/10 px-4 py-3 text-[14.5px] text-ink-900"
+              className="mt-5 rounded-panel border border-alert/50 bg-alert/10 px-4 py-3 text-[14.5px] text-ink-900"
             >
               {error}
             </p>
@@ -496,7 +496,7 @@ export function RequestPage() {
 
         {/* Récapitulatif matériel */}
         <aside className="order-1 lg:order-2 lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
-          <div className="panel rounded-[3px]">
+          <div className="panel rounded-panel">
             <header className="flex items-center justify-between gap-3 border-b border-ink-950/10 px-5 py-4">
               <h2 className="tech text-ink-800">Matériel sélectionné</h2>
               <span className="font-mono text-xs tabular-nums text-brass-600">
@@ -564,7 +564,7 @@ export function RequestPage() {
                                 type="button"
                                 onClick={() => toggleOption(product.id, opt.id)}
                                 aria-pressed={on}
-                                className={`rounded-[3px] border px-2.5 py-1.5 text-[12px] transition-colors ${
+                                className={`rounded-panel border px-2.5 py-1.5 text-[12px] transition-colors ${
                                   on
                                     ? "border-brass-600/60 bg-brass-100/60 text-brass-700"
                                     : "border-ink-950/13 text-ink-600 hover:border-ink-950/24"

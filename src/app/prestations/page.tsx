@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import { Glyph } from "@/components/ui/Glyph";
-import { SignalLine } from "@/components/ui/Ambience";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { categories } from "@/data/catalog";
 import { photo } from "@/data/photos";
@@ -94,7 +93,9 @@ export default function PrestationsPage() {
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
           <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
             <Reveal>
-              <span className="tech text-brass-700/80">01 — Location</span>
+              <span className="step-label">
+                <span className="step-num">01</span> Location
+              </span>
               <h2 className="display-lg mt-4 text-ink-900">
                 Location de matériel
               </h2>
@@ -125,7 +126,7 @@ export default function PrestationsPage() {
                   <li key={c.id}>
                     <Link
                       href={`/materiel/${c.slug}`}
-                      className="panel group flex h-full flex-col gap-2.5 rounded-[3px] p-4 transition-colors hover:border-brass-600/45"
+                      className="panel panel-link group flex h-full flex-col gap-2.5 rounded-panel p-4"
                     >
                       <Glyph
                         name={c.id}
@@ -155,7 +156,9 @@ export default function PrestationsPage() {
           <Reveal>
             <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                <span className="tech text-brass-300">02 — Installation</span>
+                <span className="step-label">
+                  <span className="step-num">02</span> Installation
+                </span>
                 <h2 className="display-lg mt-4 max-w-2xl">
                   Installation et mise en service
                 </h2>
@@ -169,7 +172,7 @@ export default function PrestationsPage() {
 
               {visuelInstallation && (
                 <figure className="w-full lg:w-[420px]">
-                  <div className="relative aspect-[3/2] overflow-hidden rounded-[3px] bg-ink-950">
+                  <div className="relative aspect-[3/2] overflow-hidden rounded-panel bg-ink-950">
                     <Image
                       src={visuelInstallation.src}
                       alt={visuelInstallation.alt}
@@ -186,7 +189,7 @@ export default function PrestationsPage() {
             </div>
           </Reveal>
 
-          <ol className="mt-14 grid gap-px overflow-hidden rounded-[3px] border border-white/12 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-14 grid gap-px overflow-hidden rounded-panel border border-white/12 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
             {INSTALLATION_STEPS.map((s, i) => (
               <Reveal as="li" key={s.t} delay={i * 70}>
                 <div className="flex h-full flex-col bg-ink-900 p-6">
@@ -222,8 +225,8 @@ export default function PrestationsPage() {
           <Reveal>
             <div className="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
               <div>
-                <span className="tech text-brass-700/80">
-                  03 — DJ &amp; musiciens
+                <span className="step-label">
+                  <span className="step-num">03</span> DJ &amp; musiciens
                 </span>
                 <h2 className="display-lg mt-4 text-ink-900">
                   Le DJ arrive avec son dispositif
@@ -240,7 +243,7 @@ export default function PrestationsPage() {
                 </Link>
               </div>
 
-              <div className="panel rounded-[3px] p-6 sm:p-7">
+              <div className="panel rounded-panel p-6 sm:p-7">
                 <h3 className="tech text-brass-600">Ce qui peut être inclus</h3>
                 <ul className="mt-5 space-y-3.5">
                   {[
@@ -260,7 +263,6 @@ export default function PrestationsPage() {
             </div>
           </Reveal>
         </div>
-        <SignalLine className="mt-14 opacity-50" />
       </section>
 
       {/* Combinaisons */}
@@ -276,7 +278,7 @@ export default function PrestationsPage() {
           <ul className="mt-12 grid gap-4 lg:grid-cols-3">
             {COMBOS.map((c, i) => (
               <Reveal as="li" key={c.code} delay={i * 80}>
-                <div className="panel flex h-full flex-col rounded-[3px] p-6 sm:p-7">
+                <div className="panel flex h-full flex-col rounded-panel p-6 sm:p-7">
                   <div className="flex items-center gap-3">
                     <span className="grid h-8 w-8 place-items-center border border-brass-600/55 font-mono text-[13px] text-brass-600">
                       {c.code}
@@ -296,7 +298,7 @@ export default function PrestationsPage() {
                     {c.tags.map((t) => (
                       <li
                         key={t}
-                        className="rounded-[3px] border border-ink-950/13 px-2.5 py-1.5 text-[12px] text-ink-600"
+                        className="rounded-panel border border-ink-950/13 px-2.5 py-1.5 text-[12px] text-ink-600"
                       >
                         {t}
                       </li>

@@ -18,7 +18,7 @@ export function QuoteToast() {
       }`}
     >
       {visible && (
-        <div className="panel flex items-center gap-3 rounded-[3px] px-4 py-3 shadow-[0_18px_40px_-18px_rgba(0,0,0,.9)]">
+        <div className="panel flex items-center gap-3 rounded-panel px-4 py-3 shadow-[0_18px_40px_-18px_rgba(0,0,0,.9)]">
           <p className="text-sm text-ink-900 min-w-0">
             <span className="font-medium">{lastAdded}</span>
             <span className="text-ink-600">

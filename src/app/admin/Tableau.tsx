@@ -58,7 +58,7 @@ export function Tableau({
         action={action}
         // La clé force la réinitialisation des champs quand on change de fiche.
         key={edition?.id ?? "nouvelle"}
-        className="panel mt-8 rounded-[3px] p-6 sm:p-7"
+        className="panel mt-8 rounded-panel p-6 sm:p-7"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="tech text-brass-600">
@@ -187,7 +187,7 @@ export function Tableau({
       </form>
 
       {/* Fiches */}
-      <ul className="mt-10 divide-y divide-ink-950/10 rounded-[3px] border border-ink-950/11">
+      <ul className="mt-10 divide-y divide-ink-950/10 rounded-panel border border-ink-950/11">
         {produits.map((p) => (
           <li
             key={p.id}

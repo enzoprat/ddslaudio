@@ -101,7 +101,7 @@ export default async function ProductPage({ params }: Params) {
             <ProductMedia
               product={product}
               size="large"
-              className="h-56 rounded-[3px] border border-ink-950/11 sm:h-72"
+              className="h-56 rounded-panel border border-ink-950/11 sm:h-72"
             />
 
             <div className="mt-8">
@@ -132,7 +132,7 @@ export default async function ProductPage({ params }: Params) {
             {hasSpecs(product) && (
               <section className="mt-10">
                 <h2 className="tech text-brass-600">Caractéristiques</h2>
-                <dl className="mt-4 overflow-hidden rounded-[3px] border border-ink-950/11">
+                <dl className="mt-4 overflow-hidden rounded-panel border border-ink-950/11">
                   {Object.entries(product.specifications).map(([k, v], i) => (
                     <div
                       key={k}
@@ -152,7 +152,7 @@ export default async function ProductPage({ params }: Params) {
             {product.packContents.length > 0 && (
               <section className="mt-10">
                 <h2 className="tech text-brass-600">Contenu</h2>
-                <ul className="mt-4 divide-y divide-ink-950/10 rounded-[3px] border border-ink-950/11">
+                <ul className="mt-4 divide-y divide-ink-950/10 rounded-panel border border-ink-950/11">
                   {product.packContents.map((c) => (
                     <li
                       key={c.label}
@@ -189,7 +189,7 @@ export default async function ProductPage({ params }: Params) {
                   {product.accessories.map((a) => (
                     <li
                       key={a}
-                      className="rounded-[3px] border border-ink-950/11 px-3 py-2 text-[14px] text-ink-700"
+                      className="rounded-panel border border-ink-950/11 px-3 py-2 text-[14px] text-ink-700"
                     >
                       {a}
                     </li>
@@ -208,7 +208,7 @@ export default async function ProductPage({ params }: Params) {
 
           {/* Colonne demande */}
           <aside className="lg:sticky lg:top-[calc(var(--header-h)+24px)] lg:self-start">
-            <div className="panel rounded-[3px] p-6">
+            <div className="panel rounded-panel p-6">
               <div className="flex items-baseline justify-between gap-4 border-b border-ink-950/10 pb-4">
                 <h2 className="tech text-ink-800">Ajouter à ma demande</h2>
                 {prix && (
@@ -254,9 +254,10 @@ export default async function ProductPage({ params }: Params) {
         {related.length > 0 && (
           <section className="mt-20">
             <div className="flex items-end justify-between gap-4 border-b border-ink-950/11 pb-4">
-              <h2 className="display-md text-ink-900">
-                Dans {category.name.toLowerCase()}
-              </h2>
+              {/* Le nom de catégorie garde sa casse : « Dans régie dj »
+                  se lisait mal, « Régie DJ » est un intitulé, pas un
+                  nom commun. */}
+              <h2 className="display-md text-ink-900">Dans {category.name}</h2>
               <Link
                 href={`/materiel/${category.slug}`}
                 className="tech text-brass-600 hover:text-brass-700"

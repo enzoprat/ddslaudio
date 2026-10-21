@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
-import { SignalLine } from "@/components/ui/Ambience";
 import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import { parcSummary } from "@/data/catalog";
@@ -122,7 +121,7 @@ export default async function AProposPage() {
             </h2>
           </Reveal>
 
-          <ol className="mt-12 grid gap-px overflow-hidden rounded-[3px] border border-ink-950/11 bg-ink-950/7 sm:grid-cols-2">
+          <ol className="mt-12 grid gap-px overflow-hidden rounded-panel border border-ink-950/11 bg-ink-950/7 sm:grid-cols-2">
             {PRINCIPES.map((p, i) => (
               <Reveal as="li" key={p.code} delay={i * 70}>
                 <div className="flex h-full flex-col bg-paper-50 p-6 sm:p-7">
@@ -140,7 +139,6 @@ export default async function AProposPage() {
             ))}
           </ol>
         </div>
-        <SignalLine className="mt-16 opacity-45" />
       </section>
 
       <section className="bg-paper-50 py-16 sm:py-20">

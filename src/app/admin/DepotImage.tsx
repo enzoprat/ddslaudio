@@ -54,7 +54,7 @@ export function DepotImage({ valeurInitiale }: { valeurInitiale: string }) {
           setSurvol(false);
           void envoyer(e.dataTransfer.files[0]);
         }}
-        className={`flex items-center gap-4 rounded-[3px] border border-dashed p-4 transition-colors ${
+        className={`flex items-center gap-4 rounded-panel border border-dashed p-4 transition-colors ${
           survol ? "border-brass-600 bg-brass-600/5" : "border-ink-950/25"
         }`}
       >
@@ -65,10 +65,10 @@ export function DepotImage({ valeurInitiale }: { valeurInitiale: string }) {
             width={80}
             height={80}
             unoptimized
-            className="h-20 w-20 shrink-0 rounded-[2px] object-cover"
+            className="h-20 w-20 shrink-0 rounded-ctl object-cover"
           />
         ) : (
-          <div className="h-20 w-20 shrink-0 rounded-[2px] bg-paper-200" />
+          <div className="h-20 w-20 shrink-0 rounded-ctl bg-paper-200" />
         )}
 
         <div className="min-w-0">

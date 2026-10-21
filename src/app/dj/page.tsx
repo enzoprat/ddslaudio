@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { DjForm } from "@/components/dj/DjForm";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
-import { Beams, SignalLine } from "@/components/ui/Ambience";
 import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import { productsByCategory } from "@/data/catalog";
@@ -68,7 +67,6 @@ export default async function DjPage() {
 
       {/* En-tête */}
       <section className="relative overflow-hidden border-b border-ink-950/10">
-        <Beams />
         <div
           className="pointer-events-none absolute inset-0 grid-tech opacity-30"
           style={{ maskImage: "linear-gradient(to bottom, black, transparent)" }}
@@ -96,7 +94,7 @@ export default async function DjPage() {
             </div>
           </div>
 
-          <div className="panel self-end rounded-[3px] p-6 sm:p-7">
+          <div className="panel self-end rounded-panel p-6 sm:p-7">
             <h2 className="tech text-brass-700">La régie utilisée</h2>
             <ul className="mt-6 divide-y divide-ink-950/10 border-y border-ink-950/11">
               {regie.map((p) => (
@@ -135,7 +133,7 @@ export default async function DjPage() {
             </p>
           </Reveal>
 
-          <ol className="mt-12 grid gap-px overflow-hidden rounded-[3px] border border-ink-950/11 bg-ink-950/7 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-12 grid gap-px overflow-hidden rounded-panel border border-ink-950/11 bg-ink-950/7 sm:grid-cols-2 lg:grid-cols-4">
             {CHAIN.map((c, i) => (
               <Reveal as="li" key={c.code} delay={i * 70}>
                 <div className="flex h-full flex-col bg-paper-50 p-6">
@@ -153,7 +151,6 @@ export default async function DjPage() {
             ))}
           </ol>
         </div>
-        <SignalLine className="mt-16 opacity-50" />
       </section>
 
       {/* Musiciens (fond clair) */}
@@ -223,7 +220,7 @@ export default async function DjPage() {
           <ul className="mt-12 grid gap-4 lg:grid-cols-3">
             {CAS.map((c, i) => (
               <Reveal as="li" key={c.t} delay={i * 80}>
-                <div className="panel flex h-full flex-col rounded-[3px] p-6 sm:p-7">
+                <div className="panel flex h-full flex-col rounded-panel p-6 sm:p-7">
                   <div className="flex items-center gap-3">
                     <span className="tech-sm text-brass-700/80">
                       Cas {String(i + 1).padStart(2, "0")}

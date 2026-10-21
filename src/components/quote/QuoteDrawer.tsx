@@ -159,7 +159,7 @@ export function QuoteDrawer() {
                                 type="button"
                                 onClick={() => toggleOption(product.id, opt.id)}
                                 aria-pressed={on}
-                                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-[3px] border text-[12px] transition-colors ${
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-panel border text-[12px] transition-colors ${
                                   on
                                     ? "border-brass-600/60 bg-brass-100/60 text-brass-700"
                                     : "border-ink-950/13 text-ink-600 hover:border-ink-950/24 hover:text-ink-800"
@@ -201,7 +201,7 @@ export function QuoteDrawer() {
                         setInstallation(installation === c.id ? null : c.id)
                       }
                       aria-pressed={installation === c.id}
-                      className={`px-2 py-2.5 rounded-[3px] border text-[12px] leading-tight transition-colors ${
+                      className={`px-2 py-2.5 rounded-panel border text-[12px] leading-tight transition-colors ${
                         installation === c.id
                           ? "border-brass-600 bg-brass-100/60 text-brass-700"
                           : "border-ink-950/13 text-ink-600 hover:border-ink-950/24"

@@ -85,7 +85,7 @@ export default async function MaterielPage() {
             <li key={c.id}>
               <a
                 href={`#${c.slug}`}
-                className="flex items-center gap-2 whitespace-nowrap rounded-[3px] border border-ink-950/11 px-3 py-2 text-[13px] text-ink-700 transition-colors hover:border-brass-600/55 hover:text-brass-700"
+                className="flex items-center gap-2 whitespace-nowrap rounded-panel border border-ink-950/11 px-3 py-2 text-[13px] text-ink-700 transition-colors hover:border-brass-600/55 hover:text-brass-700"
               >
                 <Glyph name={c.id} className="h-4 w-4 opacity-60" />
                 {c.name}
@@ -132,7 +132,7 @@ export default async function MaterielPage() {
           </Reveal>
 
           <Reveal delay={80}>
-            <div className="panel rounded-[3px] p-6 sm:p-7">
+            <div className="panel rounded-panel p-6 sm:p-7">
               <h3 className="tech text-brass-600">Bon à savoir</h3>
               <ul className="mt-5 space-y-4">
                 {[

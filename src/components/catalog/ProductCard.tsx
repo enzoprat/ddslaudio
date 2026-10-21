@@ -20,7 +20,7 @@ export function ProductCard({ product }: { product: Product }) {
   const prix = formatPrice(product.price);
 
   return (
-    <article className="panel group relative flex h-full flex-col overflow-hidden rounded-[3px] transition-colors duration-300 hover:border-brass-600/45">
+    <article className="panel panel-link group relative flex h-full flex-col overflow-hidden rounded-panel">
       <Link
         href={href(product)}
         className="block focus-visible:outline-offset-[-2px]"
@@ -92,11 +92,11 @@ export function SystemRow({
   const prix = formatPrice(product.price);
 
   return (
-    <article className="panel group grid gap-5 rounded-[3px] p-5 transition-colors duration-300 hover:border-brass-600/45 sm:grid-cols-[132px_minmax(0,1fr)_auto] sm:items-center sm:p-6">
+    <article className="panel panel-link group grid gap-5 rounded-panel p-5 sm:grid-cols-[132px_minmax(0,1fr)_auto] sm:items-center sm:p-6">
       <Link href={href(product)} aria-label={`Fiche : ${product.name}`}>
         <ProductMedia
           product={product}
-          className="h-28 rounded-[2px] border border-ink-950/10 sm:h-24"
+          className="h-28 rounded-ctl border border-ink-950/10 sm:h-24"
         />
       </Link>
 

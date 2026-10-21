@@ -20,11 +20,11 @@ export function QuantityStepper({
   const ceiling = max ?? 99;
 
   return (
-    <div className="inline-flex items-stretch border border-ink-950/16 rounded-[3px] bg-paper-50">
+    <div className="inline-flex items-stretch border border-ink-950/16 rounded-panel bg-paper-50">
       <button
         type="button"
         onClick={() => onChange(value - 1)}
-        className="w-11 h-11 grid place-items-center text-ink-700 hover:text-brass-600 hover:bg-paper-300 transition-colors rounded-l-[3px]"
+        className="w-11 h-11 grid place-items-center text-ink-700 hover:text-brass-600 hover:bg-paper-300 transition-colors rounded-l-panel"
         aria-label={`Retirer une unité — ${label}`}
       >
         <svg width="12" height="2" viewBox="0 0 12 2" aria-hidden="true">
@@ -43,7 +43,7 @@ export function QuantityStepper({
         type="button"
         onClick={() => onChange(value + 1)}
         disabled={value >= ceiling}
-        className="w-11 h-11 grid place-items-center text-ink-700 hover:text-brass-600 hover:bg-paper-300 transition-colors rounded-r-[3px] disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+        className="w-11 h-11 grid place-items-center text-ink-700 hover:text-brass-600 hover:bg-paper-300 transition-colors rounded-r-panel disabled:opacity-30 disabled:hover:bg-transparent disabled:cursor-not-allowed"
         aria-label={`Ajouter une unité — ${label}`}
       >
         <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">

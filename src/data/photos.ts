@@ -101,12 +101,16 @@ export function photo(id: string): Photo | undefined {
   return photos.find((p) => p.id === id);
 }
 
-/** Sélection d'accueil : un aperçu des trois volets (parc, montage, plateau). */
+/**
+ * Sélection d'accueil. L'ordre compte : la première photo occupe le
+ * grand cadre de la galerie, les suivantes les cadres secondaires.
+ * `plateau-concert-lumiere` en est absente — elle ouvre déjà le site.
+ */
 export const apercuAccueil = [
   "scene-exterieure-ecran",
-  "systeme-ligne-source-salle",
-  "plateau-concert-lumiere",
+  "installation-lyre",
   "montage-systeme-salle",
+  "systeme-ligne-source-salle",
 ]
   .map((id) => photo(id))
   .filter((p): p is Photo => Boolean(p));

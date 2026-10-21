@@ -149,7 +149,7 @@ export default async function CategoryPage({ params }: Params) {
               <li key={c.id}>
                 <Link
                   href={`/materiel/${c.slug}`}
-                  className="panel group flex h-full items-center gap-3.5 rounded-[3px] p-4 transition-colors hover:border-brass-600/45"
+                  className="panel panel-link group flex h-full items-center gap-3.5 rounded-panel p-4"
                 >
                   <Glyph
                     name={c.id}

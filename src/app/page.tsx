@@ -3,15 +3,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { Hero } from "@/components/home/Hero";
-import { Marquee } from "@/components/home/Marquee";
+import { Reassurance } from "@/components/home/Reassurance";
 import { Kicker } from "@/components/ui/Kicker";
 import { Reveal } from "@/components/ui/Reveal";
 import { Glyph } from "@/components/ui/Glyph";
-import { Beams, SignalLine } from "@/components/ui/Ambience";
 import { FaqJsonLd } from "@/components/seo/JsonLd";
 import { parcSummary, categoryCount } from "@/data/catalog";
 import { listeProduitsPublics } from "@/lib/catalogue";
-import { apercuAccueil } from "@/data/photos";
+import { apercuAccueil, photo } from "@/data/photos";
 
 export const metadata: Metadata = {
   title:
@@ -47,11 +46,14 @@ const FAQ = [
 export default async function HomePage() {
   const produits = await listeProduitsPublics();
   const parc = parcSummary(produits);
+  const visuelLocation = photo("systeme-ligne-source-salle");
+  const visuelInstallation = photo("installation-lyre");
+  const visuelFinal = photo("montage-enceintes-etage");
 
   return (
     <>
       <Hero />
-      <Marquee />
+      <Reassurance />
 
       {/* ─────────────── Prestations : trois volets combinables ─────────────── */}
       <section className="relative border-b border-ink-950/10 py-20 sm:py-24">
@@ -71,19 +73,31 @@ export default async function HomePage() {
             </div>
           </Reveal>
 
+          {/* Trois registres différents plutôt que trois fois la même
+              carte : une carte photo, une carte mixte, une carte noire.
+              Les pictogrammes en filigrane à 12 % qui décoraient les
+              trois blocs ne se voyaient pas et ne disaient rien. */}
           <div className="mt-12 grid gap-4 lg:grid-cols-12">
-            {/* Bloc principal : location */}
+            {/* 01 — Location : le cœur du métier, donc le plus grand bloc */}
             <Reveal className="lg:col-span-7" as="article">
-              <div className="panel perf relative flex h-full flex-col overflow-hidden rounded-[3px] p-7 sm:p-9">
-                <div
-                  className="pointer-events-none absolute -right-10 -top-10 text-brass-600/12"
-                  aria-hidden="true"
-                >
-                  <Glyph name="sonorisation" className="h-56 w-56" />
-                </div>
+              <div className="panel flex h-full flex-col overflow-hidden rounded-panel">
+                {visuelLocation && (
+                  <div className="media media-zoom aspect-[16/7] w-full">
+                    <Image
+                      src={visuelLocation.src}
+                      alt={visuelLocation.alt}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 58vw"
+                      className="object-cover"
+                      style={{ objectPosition: visuelLocation.focus }}
+                    />
+                  </div>
+                )}
 
-                <div className="relative">
-                  <span className="tech text-brass-700/80">01 — Location</span>
+                <div className="flex flex-1 flex-col p-7 sm:p-9">
+                  <span className="step-label">
+                    <span className="step-num">01</span> Location
+                  </span>
                   <h3 className="display-md mt-4 text-ink-900">
                     Le parc, à l'unité ou en système
                   </h3>
@@ -98,7 +112,7 @@ export default async function HomePage() {
                       <li key={c.id}>
                         <Link
                           href={`/materiel/${c.slug}`}
-                          className="inline-flex items-center gap-2 rounded-[3px] border border-ink-950/13 px-3 py-2 text-[13px] text-ink-700 transition-colors hover:border-brass-600/55 hover:text-brass-700"
+                          className="inline-flex items-center gap-2 rounded-ctl border border-ink-950/13 px-3 py-2 text-[13px] text-ink-700 transition-colors hover:border-brass-600/55 hover:text-brass-700"
                         >
                           {c.name}
                           <span className="tech-sm text-brass-700">
@@ -108,69 +122,72 @@ export default async function HomePage() {
                       </li>
                     ))}
                   </ul>
-                </div>
 
-                <div className="relative mt-auto pt-9">
-                  <Link href="/materiel" className="btn btn-primary">
-                    Parcourir le matériel
-                  </Link>
+                  <div className="mt-auto pt-9">
+                    <Link href="/materiel" className="btn btn-primary">
+                      Parcourir le matériel
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Reveal>
 
-            {/* Deux blocs secondaires */}
             <div className="grid gap-4 lg:col-span-5">
+              {/* 02 — Installation : photo carrée, texte à côté */}
               <Reveal delay={90} as="article">
-                <div className="panel relative h-full overflow-hidden rounded-[3px] p-7">
-                  <div
-                    className="pointer-events-none absolute -right-6 -top-6 text-brass-600/12"
-                    aria-hidden="true"
-                  >
-                    <Glyph name="lumiere" className="h-40 w-40" />
+                <div className="panel flex h-full overflow-hidden rounded-panel">
+                  {visuelInstallation && (
+                    <div className="media media-zoom hidden w-[38%] shrink-0 sm:block">
+                      <Image
+                        src={visuelInstallation.src}
+                        alt={visuelInstallation.alt}
+                        fill
+                        sizes="200px"
+                        className="object-cover"
+                        style={{ objectPosition: visuelInstallation.focus }}
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1 p-6 sm:p-7">
+                    <span className="step-label">
+                      <span className="step-num">02</span> Installation
+                    </span>
+                    <h3 className="display-md mt-3.5 text-ink-900">
+                      Installé, câblé, réglé
+                    </h3>
+                    <p className="mt-3.5 text-[15px] leading-relaxed text-ink-700">
+                      Le matériel arrive sur place, il est monté, raccordé et
+                      réglé avant l'ouverture des portes.
+                    </p>
+                    <Link
+                      href="/prestations#installation"
+                      className="mt-5 inline-flex items-center gap-2 tech text-brass-600 hover:text-brass-700"
+                    >
+                      Installation son &amp; lumière
+                      <span aria-hidden="true">→</span>
+                    </Link>
                   </div>
-                  <span className="tech text-brass-700/80">
-                    02 — Installation
-                  </span>
-                  <h3 className="display-md mt-3.5 text-ink-900">
-                    Installé, câblé, réglé
-                  </h3>
-                  <p className="relative mt-3.5 text-[15px] leading-relaxed text-ink-700">
-                    Le matériel arrive sur place, il est monté, raccordé et
-                    réglé avant l'ouverture des portes. Vous ne touchez ni à un
-                    câble, ni à un ampli.
-                  </p>
-                  <Link
-                    href="/prestations#installation"
-                    className="mt-5 inline-flex items-center gap-2 tech text-brass-600 hover:text-brass-700"
-                  >
-                    Installation son &amp; lumière
-                    <span aria-hidden="true">→</span>
-                  </Link>
                 </div>
               </Reveal>
 
+              {/* 03 — DJ : bloc noir. Le changement de registre marque
+                  que ce n'est plus de la location mais une prestation. */}
               <Reveal delay={160} as="article">
-                <div className="panel relative h-full overflow-hidden rounded-[3px] p-7">
-                  <div
-                    className="pointer-events-none absolute -right-6 -bottom-8 text-brass-600/12"
-                    aria-hidden="true"
-                  >
-                    <Glyph name="regie-dj" className="h-40 w-40" />
-                  </div>
-                  <span className="tech text-brass-700/80">
-                    03 — DJ &amp; musiciens
+                <div className="stage flex h-full flex-col rounded-panel p-7">
+                  <span className="step-label">
+                    <span className="step-num">03</span> DJ &amp; musiciens
                   </span>
-                  <h3 className="display-md mt-3.5 text-ink-900">
+                  <h3 className="display-md mt-3.5 text-paper-50">
                     Quelqu'un derrière la régie
                   </h3>
-                  <p className="relative mt-3.5 text-[15px] leading-relaxed text-ink-700">
+                  <p className="mt-3.5 text-[15px] leading-relaxed text-paper-200/75">
                     DDSL Audio assure le DJ set, avec la régie, le son et la
                     lumière nécessaires. Des musiciens peuvent s'ajouter selon
                     le projet.
                   </p>
                   <Link
                     href="/dj"
-                    className="mt-5 inline-flex items-center gap-2 tech text-brass-600 hover:text-brass-700"
+                    className="mt-5 inline-flex items-center gap-2 tech text-brass-300 hover:text-brass-200"
                   >
                     La prestation DJ
                     <span aria-hidden="true">→</span>
@@ -186,7 +203,9 @@ export default async function HomePage() {
               <span className="text-ink-800">
                 régie DJ louée + lyres + installation
               </span>
-              <span className="text-ink-400">—</span>
+              <span className="text-ink-400" aria-hidden="true">
+                ·
+              </span>
               <span>un seul devis, un seul interlocuteur.</span>
             </p>
           </Reveal>
@@ -269,16 +288,20 @@ export default async function HomePage() {
       </section>
 
       {/* ─────────────── Déroulé : chaîne de signal ─────────────── */}
+      {/* Quatre étapes reliées par un fil, comme un schéma de câblage.
+          Les quatre encadrés identiques d'avant ne disaient pas que les
+          étapes s'enchaînent — et faisaient la même figure que les trois
+          autres grilles de la page. */}
       <section className="relative border-b border-ink-950/10 py-20 sm:py-24">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
           <Reveal>
             <Kicker>De la demande au jour J</Kicker>
-            <h2 className="display-lg mt-5 max-w-2xl text-ink-900">
+            <h2 className="display-lg mt-4 max-w-2xl text-ink-900">
               Comment ça se passe
             </h2>
           </Reveal>
 
-          <ol className="mt-14 grid gap-px overflow-hidden rounded-[3px] border border-ink-950/11 bg-ink-950/7 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="chaine mt-14 grid gap-y-10 lg:grid-cols-4 lg:gap-x-10">
             {[
               {
                 n: "01",
@@ -301,24 +324,16 @@ export default async function HomePage() {
                 d: "Vous récupérez le matériel, ou DDSL Audio livre, installe et règle sur place.",
               },
             ].map((step, i) => (
-              <Reveal as="li" key={step.n} delay={i * 70}>
-                <div className="relative flex h-full flex-col bg-paper-50 p-6 sm:p-7">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-[13px] text-brass-700">
-                      {step.n}
-                    </span>
-                    <span
-                      className="h-px flex-1 bg-gradient-to-r from-brass-600/50 to-transparent"
-                      aria-hidden="true"
-                    />
-                  </div>
-                  <h3 className="display-md mt-5 text-[1.35rem] text-ink-900">
-                    {step.t}
-                  </h3>
-                  <p className="mt-3 text-[14.5px] leading-relaxed text-ink-600">
-                    {step.d}
-                  </p>
-                </div>
+              <Reveal as="li" key={step.n} delay={i * 80} className="chaine-etape">
+                <span className="chaine-noeud" aria-hidden="true">
+                  <span className="numeral text-[15px] text-brass-700">
+                    {step.n}
+                  </span>
+                </span>
+                <h3 className="display-sm mt-5 text-ink-900">{step.t}</h3>
+                <p className="mt-2.5 max-w-sm text-[15px] leading-relaxed text-ink-600">
+                  {step.d}
+                </p>
               </Reveal>
             ))}
           </ol>
@@ -326,8 +341,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─────────────── Je ne sais pas quoi choisir ─────────────── */}
-      <section className="relative grain overflow-hidden border-b border-ink-950/10 bg-paper-50">
-        <Beams className="opacity-60" />
+      <section className="relative border-b border-ink-950/10 bg-paper-50">
         <div className="relative mx-auto max-w-[1400px] px-4 py-20 sm:px-6 sm:py-24">
           <Reveal>
             <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center">
@@ -349,7 +363,7 @@ export default async function HomePage() {
                 </p>
               </div>
 
-              <div className="panel rounded-[3px] p-7">
+              <div className="panel rounded-panel p-7">
                 <span className="tech text-brass-700">Parcours guidé</span>
                 <ul className="mt-6 space-y-3.5">
                   {[
@@ -376,93 +390,136 @@ export default async function HomePage() {
             </div>
           </Reveal>
         </div>
-        <SignalLine className="opacity-60" />
       </section>
 
       {/* ─────────────── Réalisations ─────────────── */}
-      <section className="border-b border-ink-950/10 py-20 sm:py-24">
+      {/* Galerie volontairement dissymétrique : une grande image porte
+          la section, les autres la complètent. Une grille de quatre
+          vignettes égales donnait des photos toutes petites et un bloc
+          interchangeable avec n'importe quel autre site. */}
+      <section className="sand border-b border-ink-950/10 py-20 sm:py-24">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
           <Reveal>
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div>
                 <Kicker>Sur le terrain</Kicker>
-                <h2 className="display-lg mt-5 max-w-xl text-ink-900">
-                  Réalisations
+                <h2 className="display-lg mt-4 max-w-xl text-ink-900">
+                  Le matériel en situation
                 </h2>
+                <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-ink-600">
+                  Pendant le montage et une fois le lieu équipé. Ces photos
+                  viennent d'interventions réelles de DDSL Audio.
+                </p>
               </div>
               <Link href="/realisations" className="btn btn-ghost self-start">
-                Voir la section
+                Toutes les réalisations
               </Link>
             </div>
-            <p className="mt-6 max-w-2xl text-[15.5px] leading-relaxed text-ink-600">
-              Le matériel en situation, pendant le montage et une fois le lieu
-              équipé.
-            </p>
           </Reveal>
 
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Mosaïque : une image maîtresse, deux moyennes, une bande
+              panoramique. Les hauteurs sont pilotées par les rangées de
+              la grille, sinon la colonne haute étire la colonne basse. */}
+          <div className="mt-12 grid gap-3 lg:grid-cols-12 lg:auto-rows-[240px]">
             {apercuAccueil.map((p, i) => (
-              <Reveal as="li" key={p.id} delay={i * 70}>
-                <figure className="panel overflow-hidden rounded-[3px]">
-                  <div className="relative aspect-[4/3] bg-ink-950">
-                    <Image
-                      src={p.src}
-                      alt={p.alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover"
-                      style={{ objectPosition: p.focus }}
-                    />
-                  </div>
-                  <figcaption className="px-4 py-3 text-[13.5px] leading-snug text-ink-600">
+              <Reveal
+                key={p.id}
+                delay={i * 80}
+                className={
+                  [
+                    "lg:col-span-7 lg:row-span-2",
+                    "lg:col-span-5",
+                    "lg:col-span-5",
+                    "lg:col-span-12",
+                  ][i] ?? "lg:col-span-6"
+                }
+              >
+                <figure className="media rounded-panel media-zoom h-full">
+                  <Image
+                    src={p.src}
+                    alt={p.alt}
+                    width={p.width}
+                    height={p.height}
+                    sizes={i === 0 ? "(max-width: 1024px) 100vw, 58vw" : "(max-width: 1024px) 100vw, 42vw"}
+                    className="h-full min-h-[220px] w-full object-cover"
+                    style={{ objectPosition: p.focus }}
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-night-950/92 via-night-950/55 to-transparent px-5 pb-4 pt-12 text-[13.5px] leading-snug text-paper-100">
                     {p.caption}
                   </figcaption>
                 </figure>
               </Reveal>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
       {/* ─────────────── Zone d'intervention + conversion finale ─────────────── */}
-      <section className="relative overflow-hidden py-20 sm:py-24">
-        <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-          <Reveal>
-            <div className="panel relative overflow-hidden rounded-[3px]">
-              <div
-                className="pointer-events-none absolute inset-0 grid-tech opacity-40"
-                aria-hidden="true"
-              />
-              <div className="relative grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.15fr_1fr] lg:items-center lg:p-14">
-                <div>
-                  <Kicker>Zone d'intervention</Kicker>
-                  <h2 className="display-lg mt-5 text-ink-900">
-                    Bordeaux, Gironde
-                    <br />
-                    et région bordelaise
-                  </h2>
-                  <p className="mt-5 max-w-lg text-[15.5px] leading-relaxed text-ink-600">
-                    Le matériel part de Bordeaux. Les interventions se font dans
-                    la métropole et le reste de la Gironde. Pour un événement
-                    plus loin, indiquez le lieu dans votre demande&nbsp;: le
-                    déplacement sera chiffré ou refusé clairement.
-                  </p>
-                </div>
+      {/* Dernier temps fort : on ferme sur une photo de montage, pas sur
+          un encadré blanc. Une seule action mise en avant — les trois
+          boutons empilés d'avant se neutralisaient entre eux. */}
+      <section className="stage relative isolate overflow-hidden">
+        {visuelFinal && (
+          <div className="media media-veil absolute inset-0">
+            <Image
+              src={visuelFinal.src}
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover"
+              style={{
+                objectPosition: visuelFinal.focus ?? "50% 40%",
+                filter: "saturate(0.8) brightness(0.75)",
+              }}
+            />
+          </div>
+        )}
 
-                <div className="space-y-3">
-                  <Link href="/demande" className="btn btn-primary w-full">
-                    Demander un devis
+        <div className="relative mx-auto max-w-[1400px] px-4 py-24 sm:px-6 sm:py-28">
+          <Reveal>
+            <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+              <div>
+                <Kicker>Zone d'intervention</Kicker>
+                <h2 className="display-lg mt-4 text-paper-50">
+                  Bordeaux, Gironde
+                  <br />
+                  et région bordelaise
+                </h2>
+                <p className="lede mt-6 text-paper-200/80">
+                  Le matériel part de Bordeaux. Les interventions se font dans
+                  la métropole et le reste de la Gironde. Pour un événement plus
+                  loin, indiquez le lieu dans votre demande&nbsp;: le
+                  déplacement sera chiffré ou refusé clairement.
+                </p>
+              </div>
+
+              <div className="lg:pb-2">
+                <Link
+                  href="/demande"
+                  className="btn btn-invert w-full text-[16px] sm:min-h-[56px]"
+                >
+                  Décrire mon projet et recevoir un devis
+                </Link>
+
+                <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[14.5px] text-paper-200/70">
+                  <Link
+                    href="/materiel"
+                    className="underline decoration-white/30 underline-offset-4 transition-colors hover:text-paper-50 hover:decoration-brass-300"
+                  >
+                    Parcourir le matériel
                   </Link>
-                  <Link href="/materiel" className="btn w-full">
-                    Voir le matériel
-                  </Link>
-                  <Link href="/besoin-conseil" className="btn btn-ghost w-full">
+                  <Link
+                    href="/besoin-conseil"
+                    className="underline decoration-white/30 underline-offset-4 transition-colors hover:text-paper-50 hover:decoration-brass-300"
+                  >
                     Je ne sais pas quoi choisir
                   </Link>
-                  <p className="pt-2 text-center text-[13px] text-ink-500">
-                    Aucun paiement en ligne · aucune réservation ferme
-                  </p>
-                </div>
+                </p>
+
+                <p className="mt-6 border-t border-white/12 pt-4 text-[13.5px] text-paper-200/55">
+                  Aucun paiement en ligne, aucune réservation ferme. La demande
+                  sert à préparer un devis.
+                </p>
               </div>
             </div>
           </Reveal>

@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div className="mx-auto max-w-[1000px] px-4 pb-24 pt-20 sm:px-6 sm:pt-28">
       <div className="flex items-center gap-3">
-        <span className="tech text-ink-500">Erreur 404 — signal perdu</span>
+        <span className="tech text-ink-500">Erreur 404, signal perdu</span>
       </div>
 
       <h1 className="display-lg mt-5 max-w-2xl text-ink-900">
@@ -31,7 +31,7 @@ export default function NotFound() {
           <li key={c.id}>
             <Link
               href={`/materiel/${c.slug}`}
-              className="panel group flex h-full items-center gap-4 rounded-[3px] p-4 transition-colors hover:border-brass-600/45"
+              className="panel panel-link group flex h-full items-center gap-4 rounded-panel p-4"
             >
               <Glyph
                 name={c.id}

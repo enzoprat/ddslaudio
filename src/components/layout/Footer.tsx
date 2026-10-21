@@ -99,9 +99,27 @@ export function Footer() {
         <div className="rule-brass" />
 
         <div className="flex flex-col gap-4 py-6 text-[13px] text-paper-200/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} {site.name} — Bordeaux, {site.area}.
-          </p>
+          <div className="space-y-1">
+            <p>
+              © {new Date().getFullYear()} {site.name} — Bordeaux, {site.area}.
+            </p>
+            {/* Crédit du studio : une seule occurrence sur tout le site,
+                le pied de page étant partagé par toutes les pages.
+                L'ancre est le nom de la marque, jamais une expression
+                commerciale — un lien de pied de page répété d'un site à
+                l'autre avec une ancre optimisée est traité comme du spam. */}
+            <p className="text-[12.5px] text-paper-200/50">
+              Réalisé par{" "}
+              <a
+                href="https://www.pratstudio.fr"
+                target="_blank"
+                rel="noopener"
+                className="text-paper-200/75 underline decoration-white/25 underline-offset-2 transition-colors hover:text-paper-50 hover:decoration-brass-300"
+              >
+                Prat Studio
+              </a>
+            </p>
+          </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Liens légaux">
             <Link href="/mentions-legales" className="hover:text-paper-50">
               Mentions légales

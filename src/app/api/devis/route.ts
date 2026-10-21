@@ -10,7 +10,7 @@ import { site } from "@/data/site";
  * sont renseignées (aucune dépendance supplémentaire) :
  *   RESEND_API_KEY   — clé API Resend
  *   DEVIS_TO_EMAIL   — adresse de réception DDSL Audio
- *   DEVIS_FROM_EMAIL — expéditeur vérifié (ex. site@ddsl-audio.fr)
+ *   DEVIS_FROM_EMAIL — expéditeur vérifié (ex. site@ddslaudio.fr)
  *
  * Sans ces variables, la demande est journalisée côté serveur et
  * l'utilisateur reçoit une confirmation : rien n'est perdu
@@ -25,9 +25,16 @@ export const runtime = "nodejs";
  * `site.ts`, inutile de demander à l'internaute de « nous contacter ».
  */
 function sendFailureMessage(): string {
-  const fallback = site.contact.email ?? site.contact.phone;
-  return fallback
-    ? `L'envoi a échoué. Réessayez dans un instant, ou contactez DDSL Audio directement au ${fallback}.`
+  /* Le téléphone d'abord : en cas d'échec d'envoi, appeler aboutit plus
+     sûrement qu'écrire. La préposition suit le moyen de contact. */
+  const repli = site.contact.phone
+    ? `au ${site.contact.phone}`
+    : site.contact.email
+      ? `à l'adresse ${site.contact.email}`
+      : null;
+
+  return repli
+    ? `L'envoi a échoué. Réessayez dans un instant, ou contactez DDSL Audio directement ${repli}.`
     : "L'envoi a échoué. Réessayez dans un instant : votre saisie est conservée.";
 }
 
